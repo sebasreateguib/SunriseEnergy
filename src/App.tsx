@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ctaImg from './assets/panelnegro2.png';
 import ScrollImageSequence from './components/scroll-image-sequence';
 import { About } from './components/About';
 import { CEO } from './components/CEO';
@@ -6,7 +7,7 @@ import { ClientsStrip } from './components/ClientsStrip';
 import { ConsultModal } from './components/ConsultModal';
 import { Expertise } from './components/Expertise';
 import { FinalCTA } from './components/FinalCTA';
-import { Footer } from './components/Footer';
+import FooterWithFadedBrand from './components/ui/footer';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { PrincipalClients } from './components/PrincipalClients';
@@ -31,8 +32,12 @@ export function App() {
       <Projects />
       <PrincipalClients />
       <CEO />
-      <FinalCTA onOpenConsult={openConsult} />
-      <Footer />
+      <div className="unified-footer-wrapper">
+        <img src={ctaImg} alt="" className="final-cta-bg" aria-hidden="true" />
+        <div className="final-cta-overlay" />
+        <FinalCTA onOpenConsult={openConsult} />
+        <FooterWithFadedBrand />
+      </div>
 
       <ConsultModal open={showModal} onClose={closeConsult} />
     </div>

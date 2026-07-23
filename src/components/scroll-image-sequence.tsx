@@ -124,15 +124,23 @@ export default function ScrollImageSequence() {
     // ─── Sync canvas size to viewport ───────────────────────────────────────
     const syncSize = useCallback(() => {
         const canvas = canvasRef.current;
+        const sticky = stickyRef.current;
         if (!canvas) return;
         const dpr = window.devicePixelRatio || 1;
         const w = window.innerWidth;
-        const h = window.innerHeight;
+        // On mobile, use a shorter panel (not full 100vh) so the frame's aspect
+        // ratio is closer to the source photo — that lets the image cover it
+        // with noticeably less crop/zoom while still leaving zero blank margin.
+        const h = w < 768 ? Math.round(window.innerHeight * 0.68) : window.innerHeight;
         if (w === 0 || h === 0) return;
         canvas.width = w * dpr;
         canvas.height = h * dpr;
         canvas.style.width = `${w}px`;
         canvas.style.height = `${h}px`;
+        if (sticky) {
+            sticky.style.height = `${h}px`;
+            sticky.style.top = w < 768 ? `${Math.round((window.innerHeight - h) / 2)}px` : "0px";
+        }
         drawFrame(frameIdx.current);
     }, [drawFrame]);
 
