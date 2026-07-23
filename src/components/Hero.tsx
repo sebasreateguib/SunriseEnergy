@@ -19,7 +19,7 @@ export function Hero({ onOpenConsult }: HeroProps) {
 
         <div className="hero-floating-card">
           <span className="hero-floating-card-icon">
-            <Zap size={20} />
+            <Zap size={16} />
           </span>
           <div>
             <div className="hero-floating-card-title">Ahorro Energético</div>

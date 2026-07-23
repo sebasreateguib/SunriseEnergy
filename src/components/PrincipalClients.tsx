@@ -50,35 +50,31 @@ export function PrincipalClients() {
         </p>
       </div>
 
-      <div className="clients-detail-grid">
-        <div className="clients-detail-group">
-          <div className="clients-detail-group-title">
-            <Building2 size={18} />
-            <span>Consultorías</span>
-          </div>
-          <ul className="clients-detail-list">
-            {CONSULTORIAS.map((name) => (
-              <li key={name}>
-                <span className="clients-detail-dot" />
-                {name}
-              </li>
-            ))}
-          </ul>
+      <div className="clients-detail-group">
+        <div className="clients-detail-group-title">
+          <Building2 size={18} />
+          <span>Consultorías</span>
         </div>
+        <div className="clients-detail-chips">
+          {CONSULTORIAS.map((name) => (
+            <span className="client-chip" key={name}>
+              {name}
+            </span>
+          ))}
+        </div>
+      </div>
 
-        <div className="clients-detail-group">
-          <div className="clients-detail-group-title">
-            <Globe2 size={18} />
-            <span>Internacionales</span>
-          </div>
-          <ul className="clients-detail-list">
-            {INTERNACIONALES.map((name) => (
-              <li key={name}>
-                <span className="clients-detail-dot" />
-                {name}
-              </li>
-            ))}
-          </ul>
+      <div className="clients-detail-group">
+        <div className="clients-detail-group-title">
+          <Globe2 size={18} />
+          <span>Internacionales</span>
+        </div>
+        <div className="clients-detail-chips">
+          {INTERNACIONALES.map((name) => (
+            <span className="client-chip" key={name}>
+              {name}
+            </span>
+          ))}
         </div>
       </div>
 

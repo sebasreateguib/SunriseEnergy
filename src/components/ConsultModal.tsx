@@ -1,4 +1,4 @@
-import { CheckCircle2, Sparkles, X } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 
 interface ConsultModalProps {
   open: boolean;
@@ -55,18 +55,7 @@ export function ConsultModal({ open, onClose }: ConsultModalProps) {
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-          <div
-            style={{
-              width: '3rem',
-              height: '3rem',
-              backgroundColor: '#d9f99d',
-              borderRadius: '50%',
-              display: 'grid',
-              placeItems: 'center',
-            }}
-          >
-            <Sparkles size={22} color="#0f172a" />
-          </div>
+
           <div>
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800, margin: 0, color: '#0f172a' }}>
               Inicia tu Proyecto de Energía Limpia

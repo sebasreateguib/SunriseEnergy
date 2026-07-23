@@ -16,8 +16,6 @@ const COPY_STAGES: {
     headline: string;
     description: string;
     accent: string;
-    position: string;
-    anim: string;
 }[] = [
         {
             threshold: 0,
@@ -25,9 +23,7 @@ const COPY_STAGES: {
             tag: "Generación",
             headline: "Solar PV / Baterías, Aerogeneradores",
             description: "Solución energética con energías renovables ecoeficientes y rentables.",
-            accent: "#16a34a",
-            position: "seq-copy--p1",
-            anim: "seq-anim-left",
+            accent: "#a3e635",
         },
         {
             threshold: 1 / 6,
@@ -35,9 +31,7 @@ const COPY_STAGES: {
             tag: "Bioenergía",
             headline: "Biogás / Biomasa",
             description: "Solución que aprovecha los residuos orgánicos e inorgánicos para producir biogás y bioabono.",
-            accent: "#d97706",
-            position: "seq-copy--p2",
-            anim: "seq-anim-right",
+            accent: "#facc15",
         },
         {
             threshold: 2 / 6,
@@ -45,9 +39,7 @@ const COPY_STAGES: {
             tag: "Calidad",
             headline: "Consultoría, Certificación y Auditoría Energética",
             description: "Aseguramiento de la calidad de componentes e instalación, cumpliendo la normatividad técnica.",
-            accent: "#0891b2",
-            position: "seq-copy--p3",
-            anim: "seq-anim-left",
+            accent: "#22d3ee",
         },
         {
             threshold: 3 / 6,
@@ -55,9 +47,7 @@ const COPY_STAGES: {
             tag: "O&M",
             headline: "O&M Sistemas Renovables",
             description: "Gestión y administración para la operación y mantenimiento de los sistemas de energías renovables.",
-            accent: "#9333ea",
-            position: "seq-copy--p4",
-            anim: "seq-anim-right",
+            accent: "#c084fc",
         },
         {
             threshold: 4 / 6,
@@ -65,9 +55,7 @@ const COPY_STAGES: {
             tag: "Bombeo",
             headline: "Bombeo de Agua Solar",
             description: "Instalaciones de bombeo de agua solar para mejorar la rentabilidad y sostenibilidad.",
-            accent: "#2563eb",
-            position: "seq-copy--p1",
-            anim: "seq-anim-left",
+            accent: "#60a5fa",
         },
         {
             threshold: 5 / 6,
@@ -75,9 +63,7 @@ const COPY_STAGES: {
             tag: "Híbrido",
             headline: "Sistemas Híbridos / Generación Distribuida",
             description: "Generación y uso rentable de energías renovables en sistemas conectados a la red y autoconsumo.",
-            accent: "#e11d48",
-            position: "seq-copy--p2",
-            anim: "seq-anim-right",
+            accent: "#fb7185",
         },
     ];
 
@@ -103,8 +89,12 @@ export default function ScrollImageSequence() {
     const [progress, setProgress] = useState(0);
     const [scrollPct, setScrollPct] = useState(0);
 
-    // Active copy stage
-    const activeCopy = [...COPY_STAGES].reverse().find(s => scrollPct >= s.threshold) ?? COPY_STAGES[0];
+    // Active stage index + data
+    const activeIndex = COPY_STAGES.reduce(
+        (acc, stage, i) => (scrollPct >= stage.threshold ? i : acc),
+        0,
+    );
+    const activeCopy = COPY_STAGES[activeIndex];
     const ActiveIcon = activeCopy.icon;
 
     // ─── Draw a frame (0-based index) ────────────────────────────────────────
@@ -121,10 +111,9 @@ export default function ScrollImageSequence() {
         const ih = img.naturalHeight;
         const cw = canvas.width;
         const ch = canvas.height;
-        // Fix mobile detection: use window.innerWidth instead of cw, as cw is scaled by devicePixelRatio
-        const isMobile = window.innerWidth < 768;
-        const zoomMultiplier = isMobile ? 0.52 : 0.85;
-        const ratio = Math.max(cw / iw, ch / ih) * zoomMultiplier;
+        // True cover fit: image fills the canvas edge-to-edge, no letterbox margins
+        const ratio = Math.max(cw / iw, ch / ih);
+
         const dx = (cw - iw * ratio) / 2;
         const dy = (ch - ih * ratio) / 2;
 
@@ -243,6 +232,7 @@ export default function ScrollImageSequence() {
 
         .seq-loading-label {
           color: var(--color-text-muted);
+          font-family: var(--font-sans);
           font-size: 0.8rem;
           font-weight: 600;
           margin-bottom: 8px;
@@ -251,137 +241,194 @@ export default function ScrollImageSequence() {
 
         .seq-canvas { display: block; }
 
-        /* Progress bar track */
-        .seq-prog-track {
-          background: rgba(10, 15, 29, 0.1);
-          height: 4px;
-          border-radius: 4px;
-          overflow: hidden;
-        }
-        .seq-prog-fill {
-          height: 100%;
-          background: linear-gradient(90deg, var(--color-brand-lime-hover) 0%, #65a30d 100%);
-          transition: width 0.1s linear;
-          border-radius: 4px;
-        }
-
-        /* Copy card */
-        .seq-copy {
+        /* Vignette for legibility + cinematic depth */
+        .seq-vignette {
           position: absolute;
-          z-index: 15;
-          width: auto;
+          inset: 0;
+          z-index: 8;
+          pointer-events: none;
+          background:
+            linear-gradient(0deg, rgba(5, 8, 16, 0.88) 0%, rgba(5, 8, 16, 0.15) 30%, rgba(5, 8, 16, 0) 55%),
+            radial-gradient(120% 90% at 50% 0%, rgba(5, 8, 16, 0) 55%, rgba(5, 8, 16, 0.55) 100%);
         }
 
-        .seq-copy--p1 { bottom: 6rem; left: 1rem; right: 1rem; }
-        .seq-copy--p2 { top: 6rem; left: 1rem; right: 1rem; }
-        .seq-copy--p3 { bottom: 8rem; left: 1rem; right: 1rem; }
-        .seq-copy--p4 { top: 8rem; left: 1rem; right: 1rem; }
-
-        @media (min-width: 768px) {
-          .seq-copy { width: 400px; }
-          .seq-copy--p1 { bottom: 5rem; left: 3rem; right: auto; top: auto; }
-          .seq-copy--p2 { top: 7rem; right: 3rem; left: auto; bottom: auto; }
-          .seq-copy--p3 { bottom: 7rem; left: 6rem; right: auto; top: auto; }
-          .seq-copy--p4 { top: 9rem; right: 6rem; left: auto; bottom: auto; }
+        /* Top progress line */
+        .seq-top-progress {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          z-index: 25;
+          background: rgba(10, 15, 29, 0.12);
+        }
+        .seq-top-progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, var(--color-brand-lime-hover), #a3e635);
+          box-shadow: 0 0 12px rgba(163, 230, 53, 0.7);
+          transition: width 0.1s linear;
         }
 
-        @keyframes seqSlideInLeft {
-          from { opacity: 0; transform: translateX(-24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes seqSlideInRight {
-          from { opacity: 0; transform: translateX(24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        .seq-anim-left { animation: seqSlideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        .seq-anim-right { animation: seqSlideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-        .seq-copy-card {
-          padding: 1.25rem;
-          border-radius: 1.25rem;
-          border: 1px solid rgba(255, 255, 255, 0.6);
-          background: rgba(255, 255, 255, 0.85);
-          backdrop-filter: blur(14px) saturate(160%);
-          -webkit-backdrop-filter: blur(14px) saturate(160%);
-          box-shadow: 0 20px 45px -20px rgba(15, 23, 42, 0.35);
-          font-family: var(--font-sans);
-        }
-
-        .seq-copy-header {
-          display: flex;
+        /* Vertical stage tracker (desktop) */
+        .seq-tracker {
+          display: none;
+          position: absolute;
+          top: 50%;
+          right: 2.5rem;
+          transform: translateY(-50%);
+          z-index: 20;
+          flex-direction: column;
           align-items: center;
-          gap: 0.65rem;
-          margin-bottom: 0.85rem;
+          gap: 0.9rem;
         }
 
-        .seq-copy-icon {
-          flex-shrink: 0;
-          width: 2.5rem;
-          height: 2.5rem;
+        @media (min-width: 900px) {
+          .seq-tracker { display: flex; }
+        }
+
+        .seq-tracker-tick {
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
-          display: grid;
-          place-items: center;
-          color: #ffffff;
+          background: rgba(255, 255, 255, 0.25);
+          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .seq-copy-tag {
+        .seq-tracker-tick.is-done {
+          background: rgba(255, 255, 255, 0.65);
+        }
+
+        .seq-tracker-tick.is-active {
+          width: 10px;
+          height: 28px;
+          border-radius: 5px;
+        }
+
+        /* Lower-third caption */
+        .seq-lower-third {
+          position: absolute;
+          left: 1.25rem;
+          right: 1.25rem;
+          bottom: 4.5rem;
+          z-index: 18;
+          display: flex;
+          align-items: flex-start;
+          gap: 1.1rem;
+          max-width: 720px;
+        }
+
+        @media (min-width: 640px) {
+          .seq-lower-third {
+            left: 3rem;
+            bottom: 4rem;
+            gap: 1.5rem;
+          }
+        }
+
+        @keyframes seqNumberIn {
+          from { opacity: 0; transform: translateY(14px) scale(0.92); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes seqTextIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .seq-lower-number {
+          flex-shrink: 0;
+          font-family: var(--font-heading);
+          font-weight: 800;
+          font-size: 3rem;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          animation: seqNumberIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @media (min-width: 640px) {
+          .seq-lower-number { font-size: 4.25rem; }
+        }
+
+        .seq-lower-divider {
+          flex-shrink: 0;
+          width: 1px;
+          height: 3.25rem;
+          margin-top: 0.4rem;
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (min-width: 640px) {
+          .seq-lower-divider { height: 4.5rem; }
+        }
+
+        .seq-lower-body {
+          animation: seqTextIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+        }
+
+        .seq-lower-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
           font-family: var(--font-heading);
           font-size: 0.72rem;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--color-text-muted);
-        }
-
-        .seq-copy-headline {
-          font-family: var(--font-heading);
-          font-size: 1.05rem;
-          font-weight: 700;
-          letter-spacing: -0.01em;
-          line-height: 1.3;
-          color: var(--color-text-main);
           margin-bottom: 0.5rem;
         }
 
-        @media (min-width: 768px) {
-          .seq-copy-headline { font-size: 1.2rem; }
+        .seq-lower-headline {
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 1.15rem;
+          line-height: 1.28;
+          letter-spacing: -0.01em;
+          color: #ffffff;
+          margin-bottom: 0.4rem;
         }
 
-        .seq-copy-description {
-          color: var(--color-text-subtle);
+        @media (min-width: 640px) {
+          .seq-lower-headline { font-size: 1.55rem; }
+        }
+
+        .seq-lower-description {
+          color: rgba(255, 255, 255, 0.65);
           font-size: 0.85rem;
-          line-height: 1.6;
+          line-height: 1.55;
+          max-width: 34ch;
         }
 
-        /* Bottom scroll progress bar */
-        .seq-bottom-bar {
+        @media (min-width: 640px) {
+          .seq-lower-description { font-size: 0.92rem; }
+        }
+
+        /* Scroll hint */
+        .seq-scroll-hint {
           position: absolute;
+          left: 1.25rem;
           bottom: 1.5rem;
-          left: 1rem;
-          right: 1rem;
-          z-index: 15;
+          z-index: 18;
           display: flex;
           align-items: center;
-          gap: 0.85rem;
-        }
-
-        @media (min-width: 768px) {
-          .seq-bottom-bar { bottom: 2rem; left: 3rem; right: 3rem; }
-        }
-
-        .seq-scroll-label {
-          color: var(--color-text-muted);
-          font-size: 0.75rem;
+          gap: 0.5rem;
+          color: rgba(255, 255, 255, 0.45);
+          font-family: var(--font-sans);
+          font-size: 0.7rem;
           font-weight: 600;
-          white-space: nowrap;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
 
-        .seq-scroll-label--full { display: none; }
-        .seq-scroll-label--short { display: block; }
+        @media (min-width: 640px) {
+          .seq-scroll-hint { left: 3rem; }
+        }
 
-        @media (min-width: 768px) {
-          .seq-scroll-label--full { display: block; }
-          .seq-scroll-label--short { display: none; }
+        .seq-scroll-hint-chevron {
+          animation: seqChevronBounce 1.6s ease-in-out infinite;
+        }
+
+        @keyframes seqChevronBounce {
+          0%, 100% { transform: translateY(0); opacity: 0.5; }
+          50% { transform: translateY(4px); opacity: 1; }
         }
       `}</style>
 
@@ -396,8 +443,15 @@ export default function ScrollImageSequence() {
                                 <div className="seq-loading-label">
                                     Cargando secuencia — {progress}%
                                 </div>
-                                <div className="seq-prog-track">
-                                    <div className="seq-prog-fill" style={{ width: `${progress}%` }} />
+                                <div style={{ height: 3, borderRadius: 3, background: "rgba(10,15,29,0.12)", overflow: "hidden" }}>
+                                    <div
+                                        style={{
+                                            height: "100%",
+                                            width: `${progress}%`,
+                                            background: "linear-gradient(90deg, var(--color-brand-lime-hover), #a3e635)",
+                                            transition: "width 0.1s linear",
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -406,46 +460,47 @@ export default function ScrollImageSequence() {
                     {/* Canvas */}
                     <canvas ref={canvasRef} className="seq-canvas" />
 
-                    {/* Overlays */}
                     {loaded && (
-                        <div
-                            key={activeCopy.headline}
-                            className={`seq-copy ${activeCopy.position} ${activeCopy.anim}`}
-                        >
-                            <div className="seq-copy-card">
-                                <div className="seq-copy-header">
-                                    <span className="seq-copy-icon" style={{ background: activeCopy.accent }}>
-                                        <ActiveIcon size={20} />
-                                    </span>
-                                    <span className="seq-copy-tag">{activeCopy.tag}</span>
-                                </div>
+                        <>
+                            <div className="seq-vignette" />
 
-                                <div className="seq-copy-headline">
-                                    {activeCopy.headline}
-                                </div>
-                                <div className="seq-copy-description">
-                                    {activeCopy.description}
+                            <div className="seq-top-progress">
+                                <div className="seq-top-progress-fill" style={{ width: `${pct}%` }} />
+                            </div>
+
+                            {/* Vertical stage tracker */}
+                            <div className="seq-tracker">
+                                {COPY_STAGES.map((stage, i) => (
+                                    <span
+                                        key={stage.tag}
+                                        className={`seq-tracker-tick${i === activeIndex ? ' is-active' : i < activeIndex ? ' is-done' : ''}`}
+                                        style={i === activeIndex ? { background: activeCopy.accent } : undefined}
+                                    />
+                                ))}
+                            </div>
+
+                            {/* Lower-third caption */}
+                            <div className="seq-lower-third" key={activeCopy.headline}>
+                                <span className="seq-lower-number" style={{ color: activeCopy.accent }}>
+                                    {String(activeIndex + 1).padStart(2, "0")}
+                                </span>
+                                <span className="seq-lower-divider" />
+                                <div className="seq-lower-body">
+                                    <div className="seq-lower-tag" style={{ color: activeCopy.accent }}>
+                                        <ActiveIcon size={14} />
+                                        {activeCopy.tag}
+                                    </div>
+                                    <div className="seq-lower-headline">{activeCopy.headline}</div>
+                                    <div className="seq-lower-description">{activeCopy.description}</div>
                                 </div>
                             </div>
-                        </div>
-                    )}
 
-                    {/* Bottom progress bar */}
-                    {loaded && (
-                        <div className="seq-bottom-bar">
-                            <div className="seq-scroll-label seq-scroll-label--full">
-                                Desplázate para continuar
-                            </div>
-                            <div className="seq-scroll-label seq-scroll-label--short">
+                            {/* Scroll hint */}
+                            <div className="seq-scroll-hint">
                                 Desplázate
+                                <span className="seq-scroll-hint-chevron">↓</span>
                             </div>
-                            <div className="seq-prog-track" style={{ flex: 1 }}>
-                                <div className="seq-prog-fill" style={{ width: `${pct}%` }} />
-                            </div>
-                            <div className="seq-scroll-label">
-                                {pct}%
-                            </div>
-                        </div>
+                        </>
                     )}
                 </div>
             </div>
