@@ -1,4 +1,4 @@
-import { Menu, X } from 'lucide-react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 
@@ -48,6 +48,7 @@ export function Header({ onOpenConsult }: HeaderProps) {
 
       <button className="site-header-cta-modern site-header-cta" onClick={onOpenConsult}>
         Solicitar Consulta
+        <ArrowUpRight size={16} strokeWidth={2.5} />
       </button>
 
       <button
@@ -60,23 +61,31 @@ export function Header({ onOpenConsult }: HeaderProps) {
       </button>
 
       {menuOpen && (
-        <div className="site-header-mobile-menu">
-          {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
-              {link.label}
-            </a>
-          ))}
-          <button
-            className="site-header-cta-modern"
-            style={{ width: '100%', marginTop: '1rem', padding: '0.8rem' }}
-            onClick={() => {
-              setMenuOpen(false);
-              onOpenConsult();
-            }}
-          >
-            Solicitar Consulta
-          </button>
-        </div>
+        <>
+          <div
+            className="site-header-mobile-backdrop"
+            aria-hidden="true"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div className="site-header-mobile-menu">
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
+                {link.label}
+              </a>
+            ))}
+            <button
+              className="site-header-cta-modern"
+              style={{ width: '100%', marginTop: '0.5rem', padding: '0.9rem' }}
+              onClick={() => {
+                setMenuOpen(false);
+                onOpenConsult();
+              }}
+            >
+              Solicitar Consulta
+              <ArrowUpRight size={16} strokeWidth={2.5} />
+            </button>
+          </div>
+        </>
       )}
     </header>
   );

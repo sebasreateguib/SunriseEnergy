@@ -8,13 +8,15 @@ import { ConsultModal } from './components/ConsultModal';
 import { Expertise } from './components/Expertise';
 import { FinalCTA } from './components/FinalCTA';
 import FooterWithFadedBrand from './components/ui/footer';
-import { Header } from './components/Header';
+import { Header } from './components/ui/navbar';
 import { Hero } from './components/Hero';
 import { PrincipalClients } from './components/PrincipalClients';
 import { Projects } from './components/Projects';
 import { Services } from './components/Services';
 import { SavingsSection } from './components/SavingsSection';
 import { LaserFlowSection } from './components/LaserFlowSection';
+import { WhatsAppFloat } from './components/WhatsAppFloat';
+import { Reveal } from './components/ui/reveal';
 
 export function App() {
   const [showModal, setShowModal] = useState(false);
@@ -27,23 +29,42 @@ export function App() {
       <Header onOpenConsult={openConsult} />
       <Hero onOpenConsult={openConsult} />
       <LaserFlowSection />
-      <ClientsStrip />
+      <Reveal direction="left">
+        <ClientsStrip />
+      </Reveal>
       <ScrollImageSequence />
-      <About />
-      <Expertise />
-      <Services />
-      <SavingsSection />
-      <Projects />
-      <PrincipalClients />
-      <CEO />
-      <div className="unified-footer-wrapper">
-        <img src={ctaImg} alt="" className="final-cta-bg" aria-hidden="true" />
-        <div className="final-cta-overlay" />
-        <FinalCTA onOpenConsult={openConsult} />
-        <FooterWithFadedBrand />
-      </div>
+      <Reveal direction="right">
+        <About />
+      </Reveal>
+      <Reveal direction="left">
+        <Expertise />
+      </Reveal>
+      <Reveal direction="right">
+        <Services />
+      </Reveal>
+      <Reveal direction="left">
+        <SavingsSection />
+      </Reveal>
+      <Reveal direction="right">
+        <Projects />
+      </Reveal>
+      <Reveal direction="left">
+        <PrincipalClients />
+      </Reveal>
+      <Reveal direction="right">
+        <CEO />
+      </Reveal>
+      <Reveal direction="left">
+        <div className="unified-footer-wrapper">
+          <img src={ctaImg} alt="" className="final-cta-bg" aria-hidden="true" />
+          <div className="final-cta-overlay" />
+          <FinalCTA onOpenConsult={openConsult} />
+          <FooterWithFadedBrand />
+        </div>
+      </Reveal>
 
       <ConsultModal open={showModal} onClose={closeConsult} />
+      <WhatsAppFloat />
     </div>
   );
 }

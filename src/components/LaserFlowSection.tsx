@@ -6,10 +6,12 @@ export function LaserFlowSection() {
       <LaserFlow horizontalBeamOffset={0.16} verticalBeamOffset={0} color="#d9f99d" verticalSizing={2} horizontalSizing={0.5} />
 
       <div className="absolute left-4 top-6 z-[6] max-w-[60%] text-left sm:left-6 sm:top-16 sm:max-w-xs md:left-16 md:top-20 md:max-w-sm">
-        <span className="block text-[0.55rem] font-semibold uppercase tracking-[0.25em] text-[#d9f99d] sm:text-xs sm:tracking-[0.3em]">
+        <span
+          className="block text-xs font-bold uppercase tracking-[0.25em] text-[#d9f99d] sm:text-sm sm:tracking-[0.3em]"
+          style={{ textShadow: '0 0 18px rgba(217, 249, 157, 0.65)' }}>
           Sunrise Energy
         </span>
-        <h2 className="mt-2 text-xl font-extrabold leading-[1.1] text-white sm:mt-3 sm:text-4xl md:text-5xl">
+        <h2 className="mt-2 text-3xl font-extrabold leading-[1.1] text-white sm:mt-3 sm:text-5xl md:text-6xl">
           Energía que
           <br />
           nace del sol.

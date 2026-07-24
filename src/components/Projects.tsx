@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { useRef } from 'react';
+import { Sparkles } from 'lucide-react';
+import { ProjectShowcase } from './ui/clipped-video-tab';
 import casapanelImg from '../assets/casapanel.png';
 import minicasaImg from '../assets/minicasa.png';
 import panelImg from '../assets/panel.png';
@@ -99,16 +99,6 @@ const PROJECTS = [
 ];
 
 export function Projects() {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-
-  const scrollByCard = (direction: 1 | -1) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    const card = scroller.querySelector<HTMLElement>('.project-card');
-    const step = card ? card.offsetWidth + 28 : 340;
-    scroller.scrollBy({ left: direction * step, behavior: 'smooth' });
-  };
-
   return (
     <section className="projects-section" id="proyectos">
       <div className="section-heading">
@@ -123,42 +113,7 @@ export function Projects() {
         </p>
       </div>
 
-      <div className="projects-carousel">
-        <div className="projects-nav">
-          <button
-            type="button"
-            className="projects-nav-btn"
-            onClick={() => scrollByCard(-1)}
-            aria-label="Proyecto anterior"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            type="button"
-            className="projects-nav-btn"
-            onClick={() => scrollByCard(1)}
-            aria-label="Siguiente proyecto"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
-
-        <div className="projects-grid" ref={scrollerRef}>
-          {PROJECTS.map((project) => (
-            <div className="project-card" key={project.title}>
-              <div className="project-card-image-wrap">
-                <img src={project.image} alt={project.title} className="project-card-image" />
-                <span className="project-card-badge">{project.badge}</span>
-              </div>
-              <div className="project-card-body">
-                <span className="project-card-tag">{project.tag}</span>
-                <h3 className="project-card-title">{project.title}</h3>
-                <p className="project-card-description">{project.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ProjectShowcase projects={PROJECTS} />
     </section>
   );
 }

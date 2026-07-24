@@ -179,6 +179,8 @@ export default function ScrollImageSequence() {
 
             st = ScrollTrigger.create({
                 trigger: containerRef.current,
+                pin: stickyRef.current,
+                pinSpacing: false,
                 start: "top top",
                 end: "bottom bottom",
                 scrub: 0.1,
@@ -218,8 +220,7 @@ export default function ScrollImageSequence() {
         }
 
         .seq-sticky {
-          position: sticky;
-          top: 0;
+          position: relative;
           width: 100vw;
           height: 100vh;
           overflow: hidden;
