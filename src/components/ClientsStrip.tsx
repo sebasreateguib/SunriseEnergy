@@ -16,7 +16,7 @@ const CLIENTS = [
 ];
 
 const COMPANY_STATS = [
-  { value: 10, suffix: '+', label: 'Años de experiencia' },
+  { value: 36, suffix: '+', label: 'Años de experiencia' },
   { value: 50, suffix: '+', label: 'Proyectos completados' },
   { value: 100, suffix: '%', label: 'Compromiso y calidad' },
 ];
