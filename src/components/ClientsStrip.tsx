@@ -2,12 +2,14 @@ import petrobrasLogo from '../assets/petrobras.svg';
 import pluspetrolLogo from '../assets/pluspetrol.png';
 import repsolLogo from '../assets/repsol.svg';
 import uniLogo from '../assets/uni.svg';
+import engieLogo from '../assets/engie.svg';
 import StatsCount from './ui/stats-count';
 
 const CLIENTS = [
   { src: petrobrasLogo, alt: 'Petrobras' },
   { src: repsolLogo, alt: 'Repsol', large: true },
   { src: pluspetrolLogo, alt: 'Pluspetrol' },
+  { src: engieLogo, alt: 'Engie', small: true },
   { src: uniLogo, alt: 'Universidad Nacional de Ingeniería', spaced: true },
 ];
 
@@ -33,7 +35,7 @@ export function ClientsStrip() {
         <div className="clients-strip-row">
           {CLIENTS.map((client) => (
             <div
-              className={`partner-logo-item${client.large ? ' partner-logo-item--large' : ''}${client.spaced ? ' partner-logo-item--spaced' : ''}`}
+              className={`partner-logo-item${client.large ? ' partner-logo-item--large' : ''}${client.small ? ' partner-logo-item--small' : ''}${client.spaced ? ' partner-logo-item--spaced' : ''}`}
               key={client.alt}
             >
               <img

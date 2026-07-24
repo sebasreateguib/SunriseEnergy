@@ -1,18 +1,5 @@
-import { Award, Building2, Globe2, Sparkles } from 'lucide-react';
+import { Award, Globe2, Sparkles } from 'lucide-react';
 
-const CONSULTORIAS = [
-  'Pluspetrol Perú Corp.',
-  'Petrobras',
-  'Repsol',
-  'Universidad Nacional de Ingeniería',
-  'Contraloría General de la República',
-  'Poder Judicial de Huánuco',
-  'Engie Energy',
-  'Congregación Dominicos',
-  'Congregación Salesiana',
-  'Comunidad Franciscana Cenáculo',
-  'Caral Soluciones Energéticas',
-];
 
 const INTERNACIONALES = [
   'AEA-IICA (Perú, Ecuador, Colombia y Bolivia)',
@@ -43,26 +30,13 @@ export function PrincipalClients() {
           <Sparkles size={15} />
           <span>Confianza y Trayectoria</span>
         </div>
-        <h2 className="section-title">Principales Clientes y Afiliaciones</h2>
+        <h2 className="section-title">Consultorías internacionales y Afiliaciones</h2>
         <p className="section-subtitle">
           Más de una década brindando consultoría y soluciones energéticas a organizaciones
           nacionales e internacionales.
         </p>
       </div>
 
-      <div className="clients-detail-group">
-        <div className="clients-detail-group-title">
-          <Building2 size={18} />
-          <span>Consultorías</span>
-        </div>
-        <div className="clients-detail-chips">
-          {CONSULTORIAS.map((name) => (
-            <span className="client-chip" key={name}>
-              {name}
-            </span>
-          ))}
-        </div>
-      </div>
 
       <div className="clients-detail-group">
         <div className="clients-detail-group-title">

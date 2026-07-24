@@ -1,5 +1,5 @@
 import { Sparkles } from 'lucide-react';
-import servicesImg from '../assets/paneles.png';
+import isometricImage from '../assets/isometric.png';
 
 const SERVICES = [
   {
@@ -28,7 +28,11 @@ export function Services() {
   return (
     <section className="services-section" id="servicios">
       <div className="services-image-col">
-        <img src={servicesImg} alt="Planta solar industrial vista aérea" className="services-image" />
+        <img 
+          src={isometricImage} 
+          alt="Sunrise Energy Services"
+          className="services-image" 
+        />
       </div>
 
       <div className="services-copy-col">

@@ -1,4 +1,5 @@
-import { Quote, Sparkles, User } from 'lucide-react';
+import { Quote, Sparkles } from 'lucide-react';
+import ceoPhoto from '../assets/foto.jpeg';
 
 export function CEO() {
   return (
@@ -6,9 +7,8 @@ export function CEO() {
       <div className="ceo-grid">
         <div className="ceo-avatar-col">
           <div className="ceo-avatar">
-            <User size={48} strokeWidth={1.5} />
+            <img src={ceoPhoto} alt="Miguel Reategui Junchaya" className="ceo-avatar-img" />
           </div>
-          <span className="ceo-avatar-label">Foto próximamente</span>
         </div>
 
         <div className="ceo-copy">
@@ -17,16 +17,27 @@ export function CEO() {
             <span>Liderazgo</span>
           </div>
 
-          <h2 className="section-title ceo-title">Nombre del CEO</h2>
-          <p className="ceo-role">Fundador &amp; CEO — Sunrise Energy</p>
+          <h2 className="section-title ceo-title">Miguel Reategui Junchaya</h2>
+          <p className="ceo-role">Ingeniero Mecánico Electricista · Fundador &amp; CEO — Sunrise Energy</p>
 
           <div className="ceo-quote">
             <Quote size={22} className="ceo-quote-icon" />
-            <p>Espacio reservado para una cita inspiradora del fundador.</p>
+            <p>
+              Cada proyecto es una oportunidad de acercar energía limpia a quienes más la
+              necesitan, incluso en los rincones más remotos del país.
+            </p>
           </div>
 
           <p className="ceo-bio">
-            Espacio reservado para la biografía, trayectoria y visión del fundador de Sunrise Energy.
+            Ingeniero Mecánico Electricista con 36 años de trayectoria liderando la
+            transformación energética del Perú a través de la energía solar fotovoltaica,
+            eólica, biomasa, hidráulica y gas. Ha diseñado y ejecutado proyectos para clientes
+            como ENEL X, CELEPSA, Pluspetrol, Shell y el Ministerio de Salud, además de más de
+            200 comunidades nativas de la Amazonía peruana. Presidente de la Asociación Peruana
+            de Energía Solar y Medio Ambiente (APES) en tres periodos y conferencista en más de
+            15 universidades del país, hoy impulsa en Sunrise Energy la adopción de soluciones
+            de almacenamiento BESS, hidrógeno verde y movilidad eléctrica para acelerar la
+            descarbonización del sector.
           </p>
         </div>
       </div>

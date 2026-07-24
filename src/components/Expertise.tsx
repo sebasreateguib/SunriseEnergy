@@ -40,32 +40,21 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
   },
 ];
 
-import minicasa from '../assets/minicasa.png';
-
 export function Expertise() {
   return (
     <section className="expertise-section" id="expertise">
       <div className="expertise-container">
-        {/* Left Column: Heading and Image */}
-        <div className="expertise-left">
-          <div className="section-heading">
-            <div className="hero-eyebrow">
-              <Sparkles size={15} />
-              <span>Áreas de Especialización</span>
-            </div>
-            <h2 className="section-title">Tecnología para cada tipo de proyecto</h2>
-            <p className="section-subtitle">
-              Cubrimos todo el espectro de energías renovables para integrar la tecnología adecuada en
-              cada proyecto de desarrollo sostenible.
-            </p>
+        <div className="section-heading">
+          <div className="hero-eyebrow">
+            <Sparkles size={15} />
+            <span>Áreas de Especialización</span>
           </div>
-          
-          <div className="expertise-image-wrapper">
-            <img src={minicasa} alt="Proyecto de Energía Renovable" className="expertise-image" />
-          </div>
+          <h2 className="section-title">Tecnología para cada tipo de proyecto</h2>
+          <p className="section-subtitle">
+            Cubrimos todo el espectro de energías renovables para integrar la tecnología adecuada en
+            cada proyecto de desarrollo sostenible.
+          </p>
         </div>
-
-        {/* Right Column: Grid */}
         <div className="expertise-grid">
           {EXPERTISE_ITEMS.map(({ icon: Icon, title, description }) => (
             <div className="expertise-card" key={title}>
