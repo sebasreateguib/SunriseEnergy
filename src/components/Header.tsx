@@ -46,7 +46,7 @@ export function Header({ onOpenConsult }: HeaderProps) {
         ))}
       </nav>
 
-      <button className="btn-primary-pill site-header-cta" onClick={onOpenConsult}>
+      <button className="site-header-cta-modern site-header-cta" onClick={onOpenConsult}>
         Solicitar Consulta
       </button>
 
@@ -67,7 +67,8 @@ export function Header({ onOpenConsult }: HeaderProps) {
             </a>
           ))}
           <button
-            className="btn-primary-pill"
+            className="site-header-cta-modern"
+            style={{ width: '100%', marginTop: '1rem', padding: '0.8rem' }}
             onClick={() => {
               setMenuOpen(false);
               onOpenConsult();

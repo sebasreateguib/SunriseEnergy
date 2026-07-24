@@ -1,6 +1,6 @@
 /* src/components/ui/stats-count.css */
 .stats-count-section {
-  padding: 3rem 1rem;
+  padding: 6rem 1rem 3rem;
   width: 100%;
   overflow: hidden;
   font-family: var(--font-heading, sans-serif);
@@ -87,7 +87,7 @@
 
 @media (max-width: 768px) {
   .stats-count-section {
-    padding: 2rem 1rem 1.5rem;
+    padding: 4rem 1rem 1.5rem;
   }
 
   .stats-count-grid {

@@ -3,6 +3,7 @@ import pluspetrolLogo from '../assets/pluspetrol.png';
 import repsolLogo from '../assets/repsol.svg';
 import uniLogo from '../assets/uni.svg';
 import engieLogo from '../assets/engie.svg';
+import caralLogo from '../assets/caral.png';
 import StatsCount from './ui/stats-count';
 
 const CLIENTS = [
@@ -10,6 +11,7 @@ const CLIENTS = [
   { src: repsolLogo, alt: 'Repsol', large: true },
   { src: pluspetrolLogo, alt: 'Pluspetrol' },
   { src: engieLogo, alt: 'Engie', small: true },
+  { src: caralLogo, alt: 'Caral Energía' },
   { src: uniLogo, alt: 'Universidad Nacional de Ingeniería', spaced: true },
 ];
 

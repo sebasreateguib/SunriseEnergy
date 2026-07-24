@@ -18,7 +18,7 @@ export function SavingsSection() {
           <ul className="savings-benefits">
             <li>
               <div className="savings-benefit-icon"><TrendingDown size={20} /></div>
-              <span>Reduce tu facturación hasta en un <strong>80%</strong></span>
+              <span>Reduce tu facturación hasta en un <strong>40%</strong></span>
             </li>
             <li>
               <div className="savings-benefit-icon"><Zap size={20} /></div>
@@ -47,7 +47,7 @@ export function SavingsSection() {
           <div className="bill-card after-card">
             <div className="bill-card-header text-green">Con Sunrise Energy</div>
             <div className="after-stats">
-              <span className="after-percentage">-80%</span>
+              <span className="after-percentage">-40%</span>
               <span className="after-label">Ahorro mensual promedio</span>
             </div>
             <div className="after-bars">
@@ -57,7 +57,7 @@ export function SavingsSection() {
               </div>
               <div className="bar-row">
                 <span className="bar-label">Ahora</span>
-                <div className="bar-track"><div className="bar-fill green-fill" style={{ width: '20%' }}></div></div>
+                <div className="bar-track"><div className="bar-fill green-fill" style={{ width: '60%' }}></div></div>
               </div>
             </div>
           </div>

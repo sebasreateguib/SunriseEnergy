@@ -14,7 +14,7 @@ import { PrincipalClients } from './components/PrincipalClients';
 import { Projects } from './components/Projects';
 import { Services } from './components/Services';
 import { SavingsSection } from './components/SavingsSection';
-import LaserFlowSection from './components/LaserFlowSection';
+import { LaserFlowSection } from './components/LaserFlowSection';
 
 export function App() {
   const [showModal, setShowModal] = useState(false);
