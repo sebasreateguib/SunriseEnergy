@@ -6,10 +6,15 @@ import panelImg from '../assets/panel.png';
 import panelesImg from '../assets/paneles.png';
 import panelnegroImg from '../assets/panelnegro.png';
 import panelnegro2Img from '../assets/panelnegro2.png';
+import arequipa2Img from '../assets/arequipa2-compressed.jpg';
+import arequipaImg from '../assets/arequipa-compressed.jpg';
+import sealImg from '../assets/seal-compressed.jpg';
+import sanfranciscoasisImg from '../assets/sanfranciscoasis-compressed.jpg';
+import huanucoImg from '../assets/huanuco-compressed.jpg';
 
 const PROJECTS = [
   {
-    image: panelImg,
+    image: sealImg,
     tag: 'Utility Scale · On-Grid',
     title: '7 Plantas Solares — SEAL Arequipa',
     badge: '35 MWp',
@@ -25,7 +30,7 @@ const PROJECTS = [
       'Diseño y configuración de una planta híbrida solar + eólica con sistema de almacenamiento BESS, incluyendo arquitectura del sistema y monitoreo de rendimiento.',
   },
   {
-    image: panelesImg,
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Multi-sede · On-Grid',
     title: '4 Plantas Solares — Congregación Franciscana',
     badge: '110 kWp',
@@ -33,7 +38,15 @@ const PROJECTS = [
       'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay, con gestión de materiales y capacitación al cliente final.',
   },
   {
-    image: casapanelImg,
+    image: sanfranciscoasisImg,
+    tag: 'Educativo · On-Grid · Autoconsumo',
+    title: 'IEPT Peruano-Chino San Francisco de Asís — Huaycán',
+    badge: '40 kWp',
+    description:
+      'Planta solar fotovoltaica de 40 kWp conectada a la red en modalidad de autoconsumo. Cubre toda la demanda eléctrica del día y suministra energía para los hornos y mezcladoras de la panadería del colegio.',
+  },
+  {
+    image: huanucoImg,
     tag: 'Sector Público · On-Grid',
     title: 'Plantas Solares — Poder Judicial del Perú',
     badge: '20 kWp',
@@ -41,7 +54,7 @@ const PROJECTS = [
       'Suministro, instalación y puesta en marcha de dos plantas solares ON GRID en Huánuco y Arequipa, con documentación técnica y validación bajo estándares de calidad.',
   },
   {
-    image: panelnegro2Img,
+    image: arequipa2Img,
     tag: 'Comercial · On-Grid',
     title: 'Planta Solar PROMART — Engie',
     badge: '26 kWp',
@@ -49,7 +62,7 @@ const PROJECTS = [
       'Liderazgo en el diseño e implementación de sistema fotovoltaico conectado a red para infraestructura comercial, en coordinación técnica con Engie como integrador.',
   },
   {
-    image: minicasaImg,
+    image: arequipaImg,
     tag: 'Off-Grid · Sector Público',
     title: 'Sistema Solar Autónomo — Ministerio de Justicia',
     badge: '5.56 kWp',
@@ -57,7 +70,7 @@ const PROJECTS = [
       'Suministro e instalación de sistema fotovoltaico autónomo para dependencias del Estado sin acceso a la red eléctrica, en Arequipa.',
   },
   {
-    image: panelnegroImg,
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Híbrido · Diesel-Solar',
     title: 'Sistema Híbrido Diesel-Solar — Loreto',
     badge: '5 kWp',
@@ -65,7 +78,7 @@ const PROJECTS = [
       'Diseño e implementación de sistema híbrido solar-diesel para abastecer talleres de capacitación técnica en comunidades nativas de la Amazonía.',
   },
   {
-    image: panelImg,
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Electrificación Rural · Amazonía',
     title: 'Pluspetrol — Lotes 88, 56 y 1AB',
     badge: '20 MWp',
@@ -73,7 +86,7 @@ const PROJECTS = [
       'Soluciones energéticas sostenibles para más de 200 comunidades nativas: electrificación rural, bombeo de agua, refrigeración de vacunas y telecomunicaciones satelitales.',
   },
   {
-    image: panelesImg,
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Salud · On-Grid',
     title: 'Sistema Solar — Centros de Salud CEDOSAC',
     badge: '20 kWp',
@@ -81,7 +94,7 @@ const PROJECTS = [
       'Desarrollo de sistemas fotovoltaicos para centros de salud rurales en Pucallpa, garantizando energía continua para servicios críticos.',
   },
   {
-    image: casapanelImg,
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Conectividad Rural · Solar',
     title: 'Sistemas Fotovoltaicos — Misiones Dominicanas',
     badge: '100 kWp',

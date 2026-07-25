@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
 export interface ShowcaseProject {
-    image: string
+    image?: string
+    gradient?: string
     tag: string
     title: string
     badge: string
@@ -62,16 +63,27 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                     borderRadius: '34px',
                 }}>
                 <AnimatePresence mode="wait">
-                    <motion.img
-                        key={activeTab}
-                        src={activeItem.image}
-                        alt={activeItem.title}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.45 }}
-                        className="absolute inset-0 h-full w-full object-cover"
-                    />
+                    {activeItem.image ? (
+                        <motion.img
+                            key={activeTab}
+                            src={activeItem.image}
+                            alt={activeItem.title}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.45 }}
+                            className="absolute inset-0 h-full w-full object-cover"
+                        />
+                    ) : activeItem.gradient ? (
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.45 }}
+                            className={cn('absolute inset-0 h-full w-full', activeItem.gradient)}
+                        />
+                    ) : null}
                 </AnimatePresence>
 
                 <div className="absolute inset-0 bg-black/15" />
