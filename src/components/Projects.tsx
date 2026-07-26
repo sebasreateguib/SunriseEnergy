@@ -71,14 +71,6 @@ const PROJECTS = [
   },
   {
     gradient: 'bg-gradient-to-br from-white to-lime-300',
-    tag: 'Híbrido · Diesel-Solar',
-    title: 'Sistema Híbrido Diesel-Solar — Loreto',
-    badge: '5 kWp',
-    description:
-      'Diseño e implementación de sistema híbrido solar-diesel para abastecer talleres de capacitación técnica en comunidades nativas de la Amazonía.',
-  },
-  {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
     tag: 'Electrificación Rural · Amazonía',
     title: 'Pluspetrol — Lotes 88, 56 y 1AB',
     badge: '20 MWp',

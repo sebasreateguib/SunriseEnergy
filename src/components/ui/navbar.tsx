@@ -1,6 +1,6 @@
 import { Equal, X } from 'lucide-react'
 import React from 'react'
-import logo from '../../assets/logo.png'
+import logoIcon from '../../assets/logoicon-cropped.png'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -33,21 +33,29 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
     }
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 px-2">
+        <header className="absolute inset-x-0 top-0 z-50 px-0 lg:fixed lg:px-2">
             <div
                 className={cn(
-                    'mx-auto mt-3 flex max-w-6xl items-center justify-between gap-4 rounded-2xl border border-black/5 bg-white/80 px-4 py-2.5 shadow-sm backdrop-blur-xl transition-all duration-300 sm:px-5',
-                    isScrolled && 'max-w-4xl bg-white/95 shadow-lg shadow-black/10'
+                    'mx-auto flex w-full max-w-6xl items-center justify-between gap-4 bg-white/12 px-4 py-2.5 backdrop-blur-sm transition-all duration-300 sm:px-5 lg:mt-3 lg:rounded-2xl lg:border lg:border-black/5 lg:bg-white/80 lg:shadow-sm lg:backdrop-blur-xl',
+                    isScrolled && 'bg-white/25 lg:max-w-4xl lg:bg-white/95 lg:shadow-lg lg:shadow-black/10'
                 )}>
                 <a
                     href="#top"
                     aria-label="Ir al inicio"
-                    className="flex shrink-0 items-center gap-2"
+                    className="flex shrink-0 items-center gap-2.5"
                     onClick={(e) => {
                         e.preventDefault()
                         window.scrollTo({ top: 0, behavior: 'smooth' })
                     }}>
-                    <img src={logo} alt="Sunrise Energy" className="h-10 w-auto sm:h-12" />
+                    <img src={logoIcon} alt="" className="h-9 w-auto sm:h-11" />
+                    <span className="flex flex-col leading-none">
+                        <span className="text-[15px] font-extrabold tracking-tight text-neutral-950 sm:text-[17px]">
+                            Sunrise Energy
+                        </span>
+                        <span className="text-[10px] font-bold tracking-[0.2em] text-lime-600 sm:text-[11px]">
+                            PERÚ
+                        </span>
+                    </span>
                 </a>
 
                 <ul className="hidden flex-1 items-center justify-center gap-1 lg:flex">
