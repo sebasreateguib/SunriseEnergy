@@ -24,7 +24,7 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             {/* FLOATING TABS (desktop) */}
             <div className="absolute bottom-6 left-2 z-20 hidden lg:block">
                 <div className="w-[280px] rounded-[28px] border border-[#e8e8e8] bg-white p-3 shadow-xl">
-                    <div className="flex flex-col gap-1.5">
+                    <div className="scrollbar-thin flex max-h-[292px] flex-col gap-1.5 overflow-y-auto pr-1">
                         {projects.map((item, index) => (
                             <button
                                 key={item.title}

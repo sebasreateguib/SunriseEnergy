@@ -22,22 +22,6 @@ const PROJECTS = [
       'Consultoría técnica para ENEL X (LARI SAC) en el diseño de 7 plantas fotovoltaicas ON GRID, desde la ingeniería conceptual hasta la evaluación de viabilidad técnica y económica.',
   },
   {
-    image: '/wind_turbines.png',
-    tag: 'Híbrido · Solar-Eólico-BESS',
-    title: 'Planta Híbrida CELEPSA',
-    badge: '50 kWp',
-    description:
-      'Diseño y configuración de una planta híbrida solar + eólica con sistema de almacenamiento BESS, incluyendo arquitectura del sistema y monitoreo de rendimiento.',
-  },
-  {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
-    tag: 'Multi-sede · On-Grid',
-    title: '4 Plantas Solares — Congregación Franciscana',
-    badge: '110 kWp',
-    description:
-      'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay, con gestión de materiales y capacitación al cliente final.',
-  },
-  {
     image: sanfranciscoasisImg,
     tag: 'Educativo · On-Grid · Autoconsumo',
     title: 'IEPT Peruano-Chino San Francisco de Asís — Huaycán',
@@ -68,6 +52,22 @@ const PROJECTS = [
     badge: '5.56 kWp',
     description:
       'Suministro e instalación de sistema fotovoltaico autónomo para dependencias del Estado sin acceso a la red eléctrica, en Arequipa.',
+  },
+  {
+    image: '/wind_turbines.png',
+    tag: 'Híbrido · Solar-Eólico-BESS',
+    title: 'Planta Híbrida CELEPSA',
+    badge: '50 kWp',
+    description:
+      'Diseño y configuración de una planta híbrida solar + eólica con sistema de almacenamiento BESS, incluyendo arquitectura del sistema y monitoreo de rendimiento.',
+  },
+  {
+    gradient: 'bg-gradient-to-br from-white to-lime-300',
+    tag: 'Multi-sede · On-Grid',
+    title: '4 Plantas Solares — Congregación Franciscana',
+    badge: '110 kWp',
+    description:
+      'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay, con gestión de materiales y capacitación al cliente final.',
   },
   {
     gradient: 'bg-gradient-to-br from-white to-lime-300',

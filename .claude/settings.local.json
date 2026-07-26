@@ -19,7 +19,10 @@
       "Bash(mkdir -p /private/tmp/claude-503/-Users-sebastianreategui-Desktop-SunriseEnergy/206ea198-9f34-45c8-b3e3-9d8de9c81d22/scratchpad/pw)",
       "Bash(npm init *)",
       "Bash(npm install *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5174/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,1600 --screenshot=/private/tmp/claude-503/-Users-sebastianreategui-Desktop-SunriseEnergy/f7bd9ce6-418e-4b5a-add8-79d713abc4e3/scratchpad/mtest.png \"http://localhost:5174/\")"
     ]
   }
 }

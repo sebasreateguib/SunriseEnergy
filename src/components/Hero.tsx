@@ -1,5 +1,5 @@
 import { ArrowUpRight, Leaf, ShieldCheck, Sparkles, Zap } from 'lucide-react';
-import heroImg from '../assets/casapanel.png';
+import heroImg from '../assets/panel.png';
 
 interface HeroProps {
   onOpenConsult: () => void;

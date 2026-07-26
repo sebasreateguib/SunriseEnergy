@@ -74,7 +74,7 @@ export default function FooterWithFadedBrand({
     brandName = 'Sunrise Energy',
     tagline = 'Powering Your World With Solar.',
     columns = defaultColumns,
-    socials = { whatsapp: 'https://wa.me/51948650409?text=Hola,%20quisiera%20más%20información%20sobre%20Sunrise%20Energy', linkedin: '#' },
+    socials = { whatsapp: 'https://wa.me/51948650409?text=Hola,%20quisiera%20más%20información%20sobre%20Sunrise%20Energy', linkedin: 'https://www.linkedin.com/in/miguel-reategui-05201924?utm_sou' },
     copyright = '© 2026 Sunrise Energy. All rights reserved.',
     legalLinks = defaultLegalLinks,
     className,
