@@ -1,5 +1,4 @@
-import { Sparkles } from 'lucide-react';
-import isometricImage from '../assets/isometric.png';
+import isometricImage from '../assets/isometric.webp';
 
 const SERVICES = [
   {
@@ -28,18 +27,18 @@ export function Services() {
   return (
     <section className="services-section" id="servicios">
       <div className="services-image-col">
-        <img 
-          src={isometricImage} 
-          alt="Sunrise Energy Services"
-          className="services-image" 
+        <img
+          src={isometricImage}
+          alt="Servicios integrales de ingeniería solar de Sunrise Energy"
+          className="services-image"
+          width={896}
+          height={1200}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 
       <div className="services-copy-col">
-        <div className="hero-eyebrow">
-          <Sparkles size={15} />
-          <span>Qué Hacemos</span>
-        </div>
         <h2 className="section-title">Cobertura integral de tu proyecto energético</h2>
 
         <ol className="services-list">

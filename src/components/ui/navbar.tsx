@@ -1,6 +1,6 @@
 import { Equal, X } from 'lucide-react'
 import React from 'react'
-import logoIcon from '../../assets/logoicon-cropped.png'
+import logoIcon from '../../assets/logoicon-cropped.webp'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -36,8 +36,12 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
         <header className="absolute inset-x-0 top-0 z-50 px-0 lg:fixed lg:px-2">
             <div
                 className={cn(
-                    'mx-auto flex w-full max-w-6xl items-center justify-between gap-4 bg-white/12 px-4 py-2.5 backdrop-blur-sm transition-all duration-300 sm:px-5 lg:mt-3 lg:rounded-2xl lg:border lg:border-black/5 lg:bg-white/80 lg:shadow-sm lg:backdrop-blur-xl',
-                    isScrolled && 'bg-white/25 lg:max-w-4xl lg:bg-white/95 lg:shadow-lg lg:shadow-black/10'
+                    // En mobile la barra es blanca sólida con un borde inferior
+                    // que la separa de la foto del hero; el backdrop-blur ya no
+                    // hace falta al no ser translúcida. De lg hacia arriba sigue
+                    // siendo la pastilla flotante con blur.
+                    'mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-b border-black/5 bg-white px-4 py-2.5 transition-all duration-300 sm:px-5 lg:mt-3 lg:rounded-2xl lg:border lg:border-black/5 lg:bg-white/80 lg:shadow-sm lg:backdrop-blur-xl',
+                    isScrolled && 'shadow-sm lg:max-w-4xl lg:bg-white/95 lg:shadow-lg lg:shadow-black/10'
                 )}>
                 <a
                     href="#top"
@@ -47,7 +51,7 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
                         e.preventDefault()
                         window.scrollTo({ top: 0, behavior: 'smooth' })
                     }}>
-                    <img src={logoIcon} alt="" className="h-9 w-auto sm:h-11" />
+                    <img src={logoIcon} alt="" width={240} height={224} className="h-9 w-auto sm:h-11" />
                     <span className="flex flex-col leading-none">
                         <span className="text-[15px] font-extrabold tracking-tight text-neutral-950 sm:text-[17px]">
                             Sunrise Energy

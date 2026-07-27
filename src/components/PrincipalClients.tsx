@@ -1,4 +1,5 @@
-import { Award, Globe2, Sparkles } from 'lucide-react';
+import { Award, Globe2, ShieldCheck } from 'lucide-react';
+import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
 
 
 const INTERNACIONALES = [
@@ -26,9 +27,19 @@ export function PrincipalClients() {
   return (
     <section className="principal-clients-section" id="trayectoria">
       <div className="section-heading">
-        <div className="hero-eyebrow">
-          <Sparkles size={15} />
-          <span>Confianza y Trayectoria</span>
+        <div className="w-fit leading-[0]">
+          <Announcement
+            movingBorder
+            movingBorderClassName="bg-[radial-gradient(#a3e635_40%,transparent_60%)]"
+          >
+            <AnnouncementTag className="bg-[#d9f99d] px-2.5 py-0.5 text-[11px] font-bold text-[#0a0f1d]">
+              36 años
+            </AnnouncementTag>
+            <AnnouncementTitle>
+              Confianza y Trayectoria
+              <ShieldCheck className="shrink-0 text-muted-foreground" size={16} />
+            </AnnouncementTitle>
+          </Announcement>
         </div>
         <h2 className="section-title">Consultorías internacionales y Afiliaciones</h2>
         <p className="section-subtitle">

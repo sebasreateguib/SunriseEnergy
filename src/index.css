@@ -1,13 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/geist";
+/* Las fuentes autoalojadas se importan desde main.tsx: si se importan aquí,
+   PostCSS inlinea el CSS de Fontsource sin reescribir sus url(...) y los .woff2
+   nunca llegan al build. */
 
 @custom-variant dark (&:is(.dark *));
 
 /* CSS Design System for Sunrise Energy Hero */
 :root {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit Variable', 'Plus Jakarta Sans Variable', sans-serif;
 
   /* Color Tokens matching the provided Hero image */
   --color-brand-lime: #d9f99d;
@@ -450,16 +452,39 @@ body {
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   align-self: flex-start;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1.05rem 0.3rem 0.3rem;
   border-radius: var(--radius-pill);
-  background: rgba(217, 249, 157, 0.35);
-  border: 1px solid rgba(101, 163, 13, 0.25);
-  color: #3f6212;
-  font-size: 0.82rem;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdf6 100%);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 0 0 1px rgba(101, 163, 13, 0.05);
+  color: var(--color-text-main);
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.hero-eyebrow-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: linear-gradient(150deg, #a3e635 0%, #4d7c0f 100%);
+  color: #f7fee7;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.hero-eyebrow-icon svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  stroke-width: 2.25;
 }
 
 /* HEADLINE */
@@ -668,11 +693,11 @@ body {
 /* ============================= */
 .section-heading {
   max-width: 640px;
-  margin: 0 auto 3.5rem;
+  margin: 0 auto 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.1rem;
+  gap: 1.35rem;
   text-align: center;
 }
 
@@ -1141,7 +1166,7 @@ body {
 
 .principal-clients-section .section-heading {
   margin-bottom: 2rem;
-  gap: 0.6rem;
+  gap: 0.85rem;
 }
 
 .clients-detail-group {
@@ -1228,15 +1253,25 @@ body {
 /* CEO / LEADERSHIP SECTION        */
 /* ============================= */
 .ceo-section {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 7rem var(--section-px);
+  position: relative;
+  width: 100%;
+  padding: 7.5rem 0;
+  background:
+    radial-gradient(120% 160% at 12% 0%, rgba(217, 249, 157, 0.4) 0%, rgba(217, 249, 157, 0) 46%),
+    #ffffff;
+  border-top: 1px solid var(--color-border-subtle);
+  overflow: hidden;
 }
 
 .ceo-grid {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--section-px);
   display: grid;
-  grid-template-columns: 0.55fr 1.45fr;
-  gap: 3.5rem;
+  grid-template-columns: 0.62fr 1.38fr;
+  gap: 4rem;
   align-items: center;
 }
 
@@ -1248,13 +1283,14 @@ body {
 }
 
 .ceo-avatar {
+  position: relative;
   width: 100%;
-  max-width: 260px;
-  aspect-ratio: 1;
-  border-radius: 50%;
+  max-width: 340px;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-card);
   background: var(--color-bg-page);
-  border: 4px solid #ffffff;
-  box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(101, 163, 13, 0.16);
+  box-shadow: 0 30px 60px -24px rgba(15, 23, 42, 0.24);
   color: var(--color-text-muted);
   overflow: hidden;
   display: grid;
@@ -1279,50 +1315,67 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.ceo-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4d7c0f;
+}
+
+.ceo-kicker svg {
+  stroke-width: 2.25;
 }
 
 .ceo-title {
   text-align: left;
-  margin-top: 0.5rem;
 }
 
 .ceo-role {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-text-subtle);
-  margin: 0 0 1rem;
+  letter-spacing: 0.01em;
+  color: #4d7c0f;
+  margin: 0 0 0.75rem;
 }
 
 .ceo-quote {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1.1rem 1.4rem;
-  background: var(--color-bg-page);
-  border-radius: var(--radius-card);
-  margin-bottom: 1.25rem;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0 0 1.75rem;
+  max-width: 46ch;
 }
 
 .ceo-quote-icon {
   flex-shrink: 0;
-  color: var(--color-brand-lime-hover);
-  margin-top: 0.15rem;
+  color: #65a30d;
+  opacity: 0.9;
 }
 
 .ceo-quote p {
-  font-size: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
   font-style: italic;
   color: var(--color-text-main);
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
 }
 
 .ceo-bio {
   font-size: 0.98rem;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--color-text-subtle);
   margin: 0;
+  max-width: 60ch;
 }
 
 /* ============================= */
@@ -1533,7 +1586,11 @@ body {
     bottom: 2.5rem;
     /* Moved up from 1.5rem */
     right: 1.5rem;
-    left: 1.5rem;
+    /* Sin left el card se ajusta a su contenido y queda anclado a la derecha,
+       igual que en escritorio. Con left y right a la vez se estiraba de borde a
+       borde, y al entrar el max-width de ≤640px se iba a la izquierda. */
+    left: auto;
+    max-width: calc(100% - 3rem);
     padding: 0.65rem 0.9rem;
   }
 
@@ -1594,10 +1651,6 @@ body {
     align-items: center;
   }
 
-  .services-copy-col .hero-eyebrow {
-    align-self: center;
-  }
-
   .ceo-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1611,6 +1664,11 @@ body {
 
   .ceo-title {
     text-align: center;
+  }
+
+  .ceo-quote {
+    align-items: center;
+    max-width: 100%;
   }
 }
 
@@ -1803,6 +1861,30 @@ body {
   .ceo-section {
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
+  }
+
+  .ceo-avatar {
+    max-width: 210px;
+  }
+
+  .ceo-kicker {
+    font-size: 0.7rem;
+  }
+
+  .ceo-title {
+    font-size: 1.75rem;
+  }
+
+  .ceo-role {
+    font-size: 0.85rem;
+  }
+
+  .ceo-quote p {
+    font-size: 1.1rem;
+  }
+
+  .ceo-bio {
+    font-size: 0.9rem;
   }
 
   .principal-clients-section {
@@ -2048,6 +2130,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.savings-content .hero-eyebrow {
+  margin-bottom: 1.25rem;
 }
 
 .savings-content .section-title {
@@ -2345,8 +2431,10 @@ body {
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
+  /* Mismas familias que el bloque :root de arriba, para que las utilidades de
+     Tailwind (font-sans, font-heading) no cambien de tipografía. */
+  --font-sans: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit Variable', 'Plus Jakarta Sans Variable', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -2385,6 +2473,14 @@ body {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  @keyframes shine {
+  0% {
+    background-position: 0% center;
+    }
+  100% {
+    background-position: 200% center;
+    }
+  }
 }
 
 .dark {
@@ -2433,4 +2529,37 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+@layer utilities {
+  .animate-shine {
+    animation: shine 5s linear infinite;
+  }
+}
+
+@utility lustre-text {
+    display: inline-block;
+    font-weight: 800;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-size: 200% auto;
+    background-position: 0% center;
+}
+
+/* El pico del gradiente es el brillo que recorre el texto. En claro era #ffffff,
+   que sobre la píldora blanca no se veía: parecía que se borraban las letras.
+   Ahora es el lima de marca (#a3e635). */
+@utility lustre-light {
+    background-image: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.7) 45%, #a3e635 50%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.05) 100%);
+}
+
+@utility lustre-dark {
+    background-image: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.4) 45%, #a3e635 50%, rgba(255,255,255,0.4) 55%, rgba(255,255,255,0.15) 70%, rgba(255,255,255,0.05) 100%);
+}
+
+@utility animate-shine {
+    animation-name: shine;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }

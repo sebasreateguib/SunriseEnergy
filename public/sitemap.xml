@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ⚠️ Actualiza el dominio cuando el sitio tenga el definitivo.
+  Es una landing de una sola página: las secciones (#nosotros, #servicios, …) no
+  se listan porque Google no indexa fragmentos como URLs separadas.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.sunriseenergy.pe/</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

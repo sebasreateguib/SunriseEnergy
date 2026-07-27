@@ -1,5 +1,6 @@
 import { ArrowUpRight, Leaf, ShieldCheck, Sparkles, Zap } from 'lucide-react';
-import heroImg from '../assets/panel.png';
+import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
+import heroImg from '../assets/panel.webp';
 
 interface HeroProps {
   onOpenConsult: () => void;
@@ -14,6 +15,10 @@ export function Hero({ onOpenConsult }: HeroProps) {
           src={heroImg}
           alt="Casa con Paneles Solares - Sunrise Energy"
           className="hero-img"
+          width={896}
+          height={1200}
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="hero-image-overlay" />
 
@@ -32,9 +37,26 @@ export function Hero({ onOpenConsult }: HeroProps) {
       <div className="hero-content-col">
         <div className="hero-decor-blob" />
         <div className="hero-content-inner">
-          <div className="hero-eyebrow">
-            <Sparkles size={15} />
-            <span>Energía Renovable de Nueva Generación</span>
+          {/* w-fit: .hero-content-inner es flex column con align-items: stretch,
+              así que sin esto el Announcement se estira a los 560px de la columna
+              y el brillo del borde recorre una caja más ancha que la píldora.
+              leading-[0]: evita que la caja de línea sume el descendente de la
+              fuente por debajo del badge. */}
+          <div className="w-fit leading-[0]">
+            <Announcement
+              movingBorder
+              movingBorderClassName="bg-[radial-gradient(#a3e635_40%,transparent_60%)]"
+            >
+              {/* Mismo tratamiento que el badge de capacidad de Proyectos:
+                  relleno lima de marca y texto oscuro sólido. */}
+              <AnnouncementTag className="bg-[#d9f99d] px-2.5 py-0.5 text-[11px] font-bold text-[#0a0f1d]">
+                Solar Fotovoltaica
+              </AnnouncementTag>
+              <AnnouncementTitle>
+                Energía de Nueva Generación
+                <Sparkles className="shrink-0 text-muted-foreground" size={16} />
+              </AnnouncementTitle>
+            </Announcement>
           </div>
 
           <h1 className="hero-title">

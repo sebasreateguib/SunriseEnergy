@@ -1,4 +1,4 @@
-import { Flame, Leaf, Sparkles, Sun, Thermometer, Waves, Wind } from 'lucide-react';
+import { Flame, Leaf, Sun, Thermometer, Waves, Wind } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 interface ExpertiseItem {
@@ -45,10 +45,6 @@ export function Expertise() {
     <section className="expertise-section" id="expertise">
       <div className="expertise-container">
         <div className="section-heading">
-          <div className="hero-eyebrow">
-            <Sparkles size={15} />
-            <span>Áreas de Especialización</span>
-          </div>
           <h2 className="section-title">Tecnología para cada tipo de proyecto</h2>
           <p className="section-subtitle">
             Cubrimos todo el espectro de energías renovables para integrar la tecnología adecuada en

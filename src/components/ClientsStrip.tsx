@@ -3,7 +3,7 @@ import pluspetrolLogo from '../assets/pluspetrol.png';
 import repsolLogo from '../assets/repsol.svg';
 import uniLogo from '../assets/uni.svg';
 import engieLogo from '../assets/engie.svg';
-import caralLogo from '../assets/caral.png';
+import caralLogo from '../assets/caral.webp';
 import StatsCount from './ui/stats-count';
 
 const CLIENTS = [
@@ -43,6 +43,8 @@ export function ClientsStrip() {
               <img
                 src={client.src}
                 alt={client.alt}
+                loading="lazy"
+                decoding="async"
                 className={`partner-logo-img${client.large ? ' partner-logo-img--tight' : ''}`}
               />
             </div>

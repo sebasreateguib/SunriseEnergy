@@ -1,16 +1,10 @@
-import { Sparkles } from 'lucide-react';
 import { ProjectShowcase } from './ui/clipped-video-tab';
-import casapanelImg from '../assets/casapanel.png';
-import minicasaImg from '../assets/minicasa.png';
-import panelImg from '../assets/panel.png';
-import panelesImg from '../assets/paneles.png';
-import panelnegroImg from '../assets/panelnegro.png';
-import panelnegro2Img from '../assets/panelnegro2.png';
-import arequipa2Img from '../assets/arequipa2-compressed.jpg';
-import arequipaImg from '../assets/arequipa-compressed.jpg';
-import sealImg from '../assets/seal-compressed.jpg';
-import sanfranciscoasisImg from '../assets/sanfranciscoasis-compressed.jpg';
-import huanucoImg from '../assets/huanuco-compressed.jpg';
+import minicasaImg from '../assets/minicasa.webp';
+import arequipa2Img from '../assets/arequipa2-compressed.webp';
+import arequipaImg from '../assets/arequipa-compressed.webp';
+import sealImg from '../assets/seal-compressed.webp';
+import sanfranciscoasisImg from '../assets/sanfranciscoasis-compressed.webp';
+import huanucoImg from '../assets/huanuco-compressed.webp';
 
 const PROJECTS = [
   {
@@ -54,7 +48,7 @@ const PROJECTS = [
       'Suministro e instalación de sistema fotovoltaico autónomo para dependencias del Estado sin acceso a la red eléctrica, en Arequipa.',
   },
   {
-    image: '/wind_turbines.png',
+    image: '/wind_turbines.webp',
     tag: 'Híbrido · Solar-Eólico-BESS',
     title: 'Planta Híbrida CELEPSA',
     badge: '50 kWp',
@@ -107,10 +101,6 @@ export function Projects() {
   return (
     <section className="projects-section" id="proyectos">
       <div className="section-heading">
-        <div className="hero-eyebrow">
-          <Sparkles size={15} />
-          <span>Nuestro Trabajo</span>
-        </div>
         <h2 className="section-title">Proyectos Destacados</h2>
         <p className="section-subtitle">
           Una muestra de los proyectos de energía renovable que hemos desarrollado a lo largo de

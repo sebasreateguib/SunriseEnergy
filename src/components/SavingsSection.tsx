@@ -1,14 +1,28 @@
 import { Zap, TrendingDown, ArrowRight } from 'lucide-react';
-import billImg from '../assets/electribill.png';
+import billImg from '../assets/electribill.webp';
+import { Badge } from '@/components/ui/badge';
+import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
 
 export function SavingsSection() {
   return (
     <section className="savings-section">
       <div className="savings-container">
         <div className="savings-content">
-          <div className="hero-eyebrow">
-            <Zap size={15} />
-            <span>Retorno de Inversión</span>
+          {/* mb-5 reemplaza el margin que .savings-content daba al .hero-eyebrow,
+              porque el contenedor no tiene gap. */}
+          <div className="mb-5 w-fit leading-[0]">
+            <Announcement
+              movingBorder
+              movingBorderClassName="bg-[radial-gradient(#a3e635_40%,transparent_60%)]"
+            >
+              <AnnouncementTag className="bg-[#d9f99d] px-2.5 py-0.5 text-[11px] font-bold text-[#0a0f1d]">
+                Hasta -40%
+              </AnnouncementTag>
+              <AnnouncementTitle>
+                Retorno de Inversión
+                <TrendingDown className="shrink-0 text-muted-foreground" size={16} />
+              </AnnouncementTitle>
+            </Announcement>
           </div>
           <h2 className="section-title">Transformamos este gasto, en tu mayor ahorro</h2>
           <p className="savings-description">
@@ -32,10 +46,18 @@ export function SavingsSection() {
           <div className="bill-card before-card">
             <div className="bill-card-header">Recibo Actual</div>
             <div className="bill-img-wrapper">
-              <img src={billImg} alt="Recibo de luz alto" className="bill-image" />
-              <div className="bill-badge red-badge">
+              <img
+                src={billImg}
+                alt="Recibo de luz alto"
+                className="bill-image"
+                width={896}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+              />
+              <Badge variant="destructive" shiny className="absolute top-3 right-3">
                  Alto Costo
-              </div>
+              </Badge>
             </div>
           </div>
           

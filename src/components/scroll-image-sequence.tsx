@@ -1,13 +1,32 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import { Droplets, Leaf, Plug, Settings, ShieldCheck, Zap } from "lucide-react";
 import type { ComponentType } from "react";
 
-const FRAME_COUNT = 240;
+/**
+ * Los frames los genera `scripts/optimize-images.mjs` a partir de
+ * `raw-assets/panel2/`. Si cambias el `step` o el `width` de ese script,
+ * actualiza también estos números.
+ */
+const VARIANTS = {
+    // Desktop: frames originales 1920x1080 sin recomprimir.
+    desktop: { dir: "/seq/desktop", frames: 81, ext: "jpg" },
+    // Mobile: los mismos frames a 900px en WebP.
+    mobile: { dir: "/seq/mobile", frames: 49, ext: "webp" },
+} as const;
 
-const getImagePath = (i: number) =>
-    `/panel2/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
+type Variant = (typeof VARIANTS)[keyof typeof VARIANTS];
+
+/** Frames que deben estar listos antes de mostrar la secuencia. */
+const GATE_FRAMES = 8;
+/** Frames que se descargan en paralelo por lote. */
+const BATCH_SIZE = 8;
+
+const getImagePath = (variant: Variant, i: number) =>
+    `${variant.dir}/f-${String(i).padStart(3, "0")}.${variant.ext}`;
+
+const prefersReducedMotion = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const COPY_STAGES: {
     threshold: number;
@@ -69,14 +88,28 @@ const COPY_STAGES: {
 
 export default function ScrollImageSequence() {
     const [scrollScreens, setScrollScreens] = useState(6);
+    const [reduceMotion, setReduceMotion] = useState(prefersReducedMotion);
+    // La variante (nº de frames y resolución) se fija en el primer render y no
+    // cambia al redimensionar, para no volver a descargar la secuencia.
+    const [variant] = useState(() =>
+        typeof window !== "undefined" && window.innerWidth < 768 ? VARIANTS.mobile : VARIANTS.desktop
+    );
+    const frameCount = reduceMotion ? 1 : variant.frames;
 
     useEffect(() => {
         const handleResize = () => {
             setScrollScreens(window.innerWidth < 768 ? 5 : 6);
         };
         handleResize();
-        window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize, { passive: true });
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const onChange = () => setReduceMotion(query.matches);
+        query.addEventListener("change", onChange);
+        return () => query.removeEventListener("change", onChange);
     }, []);
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -85,7 +118,8 @@ export default function ScrollImageSequence() {
     const images = useRef<HTMLImageElement[]>([]);
     const frameIdx = useRef(0);
 
-    const [loaded, setLoaded] = useState(false);
+    const [shouldLoad, setShouldLoad] = useState(false);
+    const [ready, setReady] = useState(false);
     const [progress, setProgress] = useState(0);
     const [scrollPct, setScrollPct] = useState(0);
 
@@ -104,7 +138,9 @@ export default function ScrollImageSequence() {
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        const img = images.current[Math.max(0, Math.min(idx, FRAME_COUNT - 1))];
+        // Si el frame pedido aún no terminó de descargar, se deja el último
+        // dibujado en pantalla en lugar de limpiar el canvas.
+        const img = images.current[Math.max(0, Math.min(idx, frameCount - 1))];
         if (!img || img.naturalWidth === 0) return;
 
         const iw = img.naturalWidth;
@@ -119,14 +155,17 @@ export default function ScrollImageSequence() {
 
         ctx.clearRect(0, 0, cw, ch);
         ctx.drawImage(img, 0, 0, iw, ih, dx, dy, iw * ratio, ih * ratio);
-    }, []);
+    }, [frameCount]);
 
     // ─── Sync canvas size to viewport ───────────────────────────────────────
     const syncSize = useCallback(() => {
         const canvas = canvasRef.current;
         const sticky = stickyRef.current;
         if (!canvas) return;
-        const dpr = window.devicePixelRatio || 1;
+        // Se limita a 2x: por encima de eso el backing store sólo gasta memoria
+        // y relleno de píxeles, porque el detalle ya lo limita la fuente
+        // (1920px en desktop, 900px en mobile).
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = window.innerWidth;
         // On mobile, use a shorter panel (not full 100vh) so the frame's aspect
         // ratio is closer to the source photo — that lets the image cover it
@@ -144,40 +183,96 @@ export default function ScrollImageSequence() {
         drawFrame(frameIdx.current);
     }, [drawFrame]);
 
-    // ─── Phase 1: preload ────────────────────────────────────────────────────
+    // ─── Canvas siempre dimensionado al viewport ────────────────────────────
     useEffect(() => {
-        let done = 0;
-        setLoaded(false);
-        setProgress(0);
-        images.current = Array.from({ length: FRAME_COUNT }, (_, i) => {
-            const img = new Image();
-            const tick = () => {
-                done++;
-                setProgress(Math.round((done / FRAME_COUNT) * 100));
-                if (done === FRAME_COUNT) {
-                    setLoaded(true);
+        syncSize();
+        window.addEventListener("resize", syncSize, { passive: true });
+        return () => window.removeEventListener("resize", syncSize);
+    }, [syncSize]);
+
+    // ─── Phase 1: la descarga arranca sólo al acercarse la sección ──────────
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    setShouldLoad(true);
+                    observer.disconnect();
                 }
-            };
-            img.onload = tick;
-            img.onerror = tick;
-            img.src = getImagePath(i);
-            return img;
-        });
+            },
+            // Un viewport de margen: da tiempo a tener los primeros frames
+            // listos sin competir con la carga del hero.
+            { rootMargin: "100% 0px" }
+        );
+        observer.observe(container);
+        return () => observer.disconnect();
     }, []);
 
-    // ─── Phase 2: canvas + ScrollTrigger ────────────────────────────────────
+    // ─── Phase 2: precarga por lotes, no bloqueante ─────────────────────────
     useEffect(() => {
-        if (!loaded) return;
-        gsap.registerPlugin(ScrollTrigger);
+        if (!shouldLoad) return;
+        let cancelled = false;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let st: any = null;
+        const loadFrame = (i: number) =>
+            new Promise<void>((resolve) => {
+                const img = new Image();
+                img.onload = img.onerror = () => resolve();
+                img.src = getImagePath(variant, i);
+                images.current[i] = img;
+            });
 
-        const timer = setTimeout(() => {
+        (async () => {
+            images.current = [];
+            setProgress(0);
+            setReady(false);
+
+            for (let start = 0; start < frameCount; start += BATCH_SIZE) {
+                if (cancelled) return;
+                const size = Math.min(BATCH_SIZE, frameCount - start);
+                await Promise.all(Array.from({ length: size }, (_, k) => loadFrame(start + k)));
+                if (cancelled) return;
+
+                // La barra de carga mide sólo los frames que hacen falta para
+                // empezar: el resto sigue descargándose de fondo.
+                const gate = Math.min(GATE_FRAMES, frameCount);
+                setProgress(Math.min(100, Math.round(((start + size) / gate) * 100)));
+                if (start + size >= gate) {
+                    setReady(true);
+                    drawFrame(frameIdx.current);
+                }
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [shouldLoad, variant, frameCount, drawFrame]);
+
+    // ─── Phase 3: scroll scrubbing (gsap se carga aparte del bundle) ────────
+    useEffect(() => {
+        if (!ready || reduceMotion) return;
+
+        let cancelled = false;
+        let trigger: { kill: () => void } | null = null;
+        let removeResize = () => { };
+
+        (async () => {
+            const [gsapModule, scrollTriggerModule] = await Promise.all([
+                import("gsap"),
+                import("gsap/ScrollTrigger"),
+            ]);
+            if (cancelled) return;
+
+            const gsap = gsapModule.gsap ?? gsapModule.default;
+            const ScrollTrigger = scrollTriggerModule.ScrollTrigger ?? scrollTriggerModule.default;
+            gsap.registerPlugin(ScrollTrigger);
+
             syncSize();
-            drawFrame(0);
+            drawFrame(frameIdx.current);
 
-            st = ScrollTrigger.create({
+            trigger = ScrollTrigger.create({
                 trigger: containerRef.current,
                 pin: stickyRef.current,
                 pinSpacing: false,
@@ -185,7 +280,7 @@ export default function ScrollImageSequence() {
                 end: "bottom bottom",
                 scrub: 0.1,
                 onUpdate(self) {
-                    const f = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(self.progress * (FRAME_COUNT - 1))));
+                    const f = Math.min(frameCount - 1, Math.max(0, Math.round(self.progress * (frameCount - 1))));
                     frameIdx.current = f;
                     drawFrame(f);
                     setScrollPct(self.progress);
@@ -193,21 +288,18 @@ export default function ScrollImageSequence() {
             });
 
             ScrollTrigger.refresh();
-        }, 50);
 
-        const handleResize = () => {
-            syncSize();
-            ScrollTrigger.refresh();
-        };
-
-        window.addEventListener("resize", handleResize);
+            const handleResize = () => ScrollTrigger.refresh();
+            window.addEventListener("resize", handleResize, { passive: true });
+            removeResize = () => window.removeEventListener("resize", handleResize);
+        })();
 
         return () => {
-            clearTimeout(timer);
-            window.removeEventListener("resize", handleResize);
-            if (st) st.kill();
+            cancelled = true;
+            removeResize();
+            trigger?.kill();
         };
-    }, [loaded, drawFrame, syncSize, scrollScreens]);
+    }, [ready, reduceMotion, frameCount, drawFrame, syncSize, scrollScreens]);
 
     const pct = Math.round(scrollPct * 100);
 
@@ -215,7 +307,7 @@ export default function ScrollImageSequence() {
         <>
             <style>{`
         .seq-outer {
-          height: ${scrollScreens * 100}vh;
+          height: ${reduceMotion ? 100 : scrollScreens * 100}vh;
           background: var(--color-bg-page);
         }
 
@@ -439,6 +531,68 @@ export default function ScrollImageSequence() {
           0%, 100% { transform: translateY(0); opacity: 0.5; }
           50% { transform: translateY(4px); opacity: 1; }
         }
+
+        /* ── Versión sin movimiento ──────────────────────────────────────────
+           Con prefers-reduced-motion no se descarga la secuencia ni se hace
+           scrub: se muestra un frame fijo y las 6 etapas como lista. */
+        .seq-static {
+          position: absolute;
+          inset: 0;
+          z-index: 18;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          gap: 1.5rem;
+          padding: 2rem 1.5rem;
+          overflow-y: auto;
+        }
+
+        @media (min-width: 640px) {
+          .seq-static { padding: 3rem; }
+        }
+
+        .seq-static-grid {
+          display: grid;
+          gap: 1.1rem 2rem;
+          grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 640px) {
+          .seq-static-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (min-width: 1024px) {
+          .seq-static-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        .seq-static-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+
+        .seq-static-item-title {
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 0.98rem;
+          line-height: 1.3;
+          color: #ffffff;
+        }
+
+        .seq-static-item-description {
+          margin-top: 0.25rem;
+          font-size: 0.82rem;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.62);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .seq-lower-number,
+          .seq-lower-body,
+          .seq-scroll-hint-chevron {
+            animation: none;
+          }
+        }
       `}</style>
 
             {/* ── Outer scroll container ─────────────────────────────────────── */}
@@ -446,7 +600,7 @@ export default function ScrollImageSequence() {
                 {/* ── Sticky viewport ─────────────────────────────────────────── */}
                 <div ref={stickyRef} className="seq-sticky">
                     {/* Loading overlay */}
-                    {!loaded && (
+                    {!ready && (
                         <div className="seq-loading-overlay">
                             <div style={{ width: "220px" }}>
                                 <div className="seq-loading-label">
@@ -469,7 +623,35 @@ export default function ScrollImageSequence() {
                     {/* Canvas */}
                     <canvas ref={canvasRef} className="seq-canvas" />
 
-                    {loaded && (
+                    {ready && reduceMotion && (
+                        <>
+                            <div className="seq-vignette" />
+                            <div className="seq-static">
+                                <div className="seq-static-grid">
+                                    {COPY_STAGES.map((stage, i) => {
+                                        const StageIcon = stage.icon;
+                                        return (
+                                            <div className="seq-static-item" key={stage.tag}>
+                                                <span className="seq-lower-number" style={{ color: stage.accent, fontSize: "1.6rem" }}>
+                                                    {String(i + 1).padStart(2, "0")}
+                                                </span>
+                                                <div>
+                                                    <div className="seq-lower-tag" style={{ color: stage.accent, marginBottom: "0.25rem" }}>
+                                                        <StageIcon size={14} />
+                                                        {stage.tag}
+                                                    </div>
+                                                    <div className="seq-static-item-title">{stage.headline}</div>
+                                                    <div className="seq-static-item-description">{stage.description}</div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {ready && !reduceMotion && (
                         <>
                             <div className="seq-vignette" />
 

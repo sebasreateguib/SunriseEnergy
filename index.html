@@ -2,16 +2,126 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sunrise Energy — Sustainable Solutions for a Better Future</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!--
+      ⚠️ DOMINIO: reemplaza https://www.sunriseenergy.pe por el dominio final en
+      los 3 sitios donde aparece abajo (canonical, og:url, og:image) y también
+      en public/robots.txt y public/sitemap.xml.
+    -->
+
+    <title>Sunrise Energy | Ingeniería en Energía Solar Fotovoltaica en Perú</title>
+    <meta
+      name="description"
+      content="Diseño, consultoría e instalación de plantas solares fotovoltaicas On-Grid y Off-Grid para empresas e instituciones en Perú. 36 años de experiencia, más de 50 proyectos y 35 MWp de capacidad diseñada."
+    />
+    <meta name="author" content="Sunrise Energy" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://www.sunriseenergy.pe/" />
+
+    <!-- Iconos -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a0f1d" />
+
+    <!-- Open Graph (WhatsApp, LinkedIn, Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sunrise Energy" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:url" content="https://www.sunriseenergy.pe/" />
+    <meta
+      property="og:title"
+      content="Sunrise Energy | Ingeniería en Energía Solar Fotovoltaica en Perú"
+    />
+    <meta
+      property="og:description"
+      content="Plantas solares On-Grid y Off-Grid, consultoría, expedientes técnicos y O&amp;M para empresas e instituciones. 36 años de trayectoria en el Perú."
+    />
+    <meta property="og:image" content="https://www.sunriseenergy.pe/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Planta solar fotovoltaica diseñada por Sunrise Energy"
+    />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Sunrise Energy | Ingeniería en Energía Solar Fotovoltaica en Perú"
+    />
+    <meta
+      name="twitter:description"
+      content="Plantas solares On-Grid y Off-Grid, consultoría, expedientes técnicos y O&amp;M para empresas e instituciones. 36 años de trayectoria en el Perú."
+    />
+    <meta name="twitter:image" content="https://www.sunriseenergy.pe/og-image.jpg" />
+
+    <!-- Datos estructurados: sólo información verificable del negocio -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.sunriseenergy.pe/#organization",
+            "name": "Sunrise Energy",
+            "url": "https://www.sunriseenergy.pe/",
+            "logo": "https://www.sunriseenergy.pe/apple-touch-icon.png",
+            "image": "https://www.sunriseenergy.pe/og-image.jpg",
+            "description": "Ingeniería, consultoría e instalación de plantas solares fotovoltaicas On-Grid y Off-Grid, sistemas híbridos y almacenamiento BESS para empresas e instituciones en Perú.",
+            "areaServed": { "@type": "Country", "name": "Perú" },
+            "knowsLanguage": ["es", "en"],
+            "founder": {
+              "@type": "Person",
+              "name": "Miguel Reategui Junchaya",
+              "jobTitle": "Fundador y CEO",
+              "sameAs": "https://www.linkedin.com/in/miguel-reategui-05201924"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "telephone": "+51948650409",
+              "areaServed": "PE",
+              "availableLanguage": ["Spanish", "English"]
+            },
+            "knowsAbout": [
+              "Energía solar fotovoltaica",
+              "Plantas solares On-Grid y Off-Grid",
+              "Auditoría energética",
+              "Expedientes técnicos energéticos",
+              "Operación y mantenimiento de plantas solares",
+              "Sistemas híbridos y almacenamiento BESS"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.sunriseenergy.pe/#website",
+            "url": "https://www.sunriseenergy.pe/",
+            "name": "Sunrise Energy",
+            "inLanguage": "es-PE",
+            "publisher": { "@id": "https://www.sunriseenergy.pe/#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Sunrise Energy — Ingeniería en energía solar fotovoltaica en Perú</h1>
+      <p>
+        Diseñamos, evaluamos e instalamos plantas solares fotovoltaicas On-Grid y Off-Grid,
+        sistemas híbridos y soluciones de almacenamiento para empresas, industrias e
+        instituciones en todo el Perú. 36 años de trayectoria, más de 50 proyectos
+        ejecutados y consultoría para clientes como ENEL X, Engie, Pluspetrol y el Poder
+        Judicial del Perú.
+      </p>
+      <p>
+        Esta página necesita JavaScript para mostrarse. Escríbenos por WhatsApp al
+        <a href="https://wa.me/51948650409">+51 948 650 409</a>.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

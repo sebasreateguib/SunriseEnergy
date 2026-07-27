@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 
 export interface ShowcaseProject {
     image?: string
@@ -35,13 +36,15 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                                         ? 'border-[#0a0f1d] bg-[#0a0f1d]'
                                         : 'border-transparent hover:border-[#0a0f1d]/15 hover:bg-[#f8fafc]'
                                 )}>
-                                <span
+                                <Badge
+                                    variant={activeTab === index ? 'default' : 'secondary'}
+                                    shiny={activeTab === index}
                                     className={cn(
-                                        'shrink-0 rounded-md px-2 py-1 text-[11px] font-bold whitespace-nowrap',
-                                        activeTab === index ? 'bg-[#d9f99d] text-[#0a0f1d]' : 'bg-[#f1f5f9] text-[#334155]'
+                                        'shrink-0 text-[11px] font-bold whitespace-nowrap',
+                                        activeTab === index ? 'bg-[#d9f99d] text-[#0a0f1d] border-transparent' : ''
                                     )}>
                                     {item.badge}
-                                </span>
+                                </Badge>
                                 <span
                                     className={cn(
                                         'min-w-0 truncate text-[13px] leading-tight font-medium',
@@ -72,6 +75,8 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.45 }}
+                            loading="lazy"
+                            decoding="async"
                             className="absolute inset-0 h-full w-full object-cover"
                         />
                     ) : activeItem.gradient ? (
@@ -118,17 +123,19 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             {/* TAB LIST (mobile) */}
             <div className="mt-4 flex gap-2 overflow-x-auto pb-2 lg:hidden">
                 {projects.map((item, index) => (
-                    <button
+                    <Badge
                         key={item.title}
                         onClick={() => setActiveTab(index)}
+                        variant={activeTab === index ? 'default' : 'outline'}
+                        shiny={activeTab === index}
                         className={cn(
-                            'shrink-0 rounded-full border px-3.5 py-2 text-[13px] font-semibold whitespace-nowrap transition-colors duration-200',
+                            'shrink-0 cursor-pointer text-[13px] font-semibold whitespace-nowrap transition-colors duration-200',
                             activeTab === index
-                                ? 'border-[#0a0f1d] bg-[#0a0f1d] text-white'
-                                : 'border-[#e2e8f0] bg-white text-[#334155]'
+                                ? 'bg-[#0a0f1d] text-white border-[#0a0f1d]'
+                                : 'bg-white text-[#334155]'
                         )}>
                         {item.badge}
-                    </button>
+                    </Badge>
                 ))}
             </div>
         </div>

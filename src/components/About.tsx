@@ -1,16 +1,11 @@
-import { Compass, Sparkles, Target } from 'lucide-react';
-import aboutImg from '../assets/foto.png';
+import { Compass, Target } from 'lucide-react';
+import aboutImg from '../assets/foto.webp';
 
 export function About() {
   return (
     <section className="about-section" id="nosotros">
       <div className="about-grid">
         <div className="about-copy">
-          <div className="hero-eyebrow">
-            <Sparkles size={15} />
-            <span>Quiénes Somos</span>
-          </div>
-
           <h2 className="section-title">
             El socio estratégico de tu <span className="hero-title-accent">transición energética</span>
           </h2>
@@ -43,7 +38,15 @@ export function About() {
         </div>
 
         <div className="about-image-col">
-          <img src={aboutImg} alt="Infraestructura solar e inversor industrial" className="about-image" />
+          <img
+            src={aboutImg}
+            alt="Infraestructura solar e inversor industrial"
+            className="about-image"
+            width={896}
+            height={1200}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
     </section>
