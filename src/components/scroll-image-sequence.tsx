@@ -214,10 +214,20 @@ export default function ScrollImageSequence() {
         if (!shouldLoad) return;
         let cancelled = false;
 
+        // Se decodifica cada frame por adelantado (fuera del hilo principal)
+        // para que drawImage() durante el scroll nunca dispare una decodificación
+        // síncrona a mitad de scrub — esa era la causa del "tirón"/10fps en mobile.
         const loadFrame = (i: number) =>
             new Promise<void>((resolve) => {
                 const img = new Image();
-                img.onload = img.onerror = () => resolve();
+                img.onload = () => {
+                    if (typeof img.decode === "function") {
+                        img.decode().catch(() => { }).finally(resolve);
+                    } else {
+                        resolve();
+                    }
+                };
+                img.onerror = () => resolve();
                 img.src = getImagePath(variant, i);
                 images.current[i] = img;
             });
