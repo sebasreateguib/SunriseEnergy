@@ -167,10 +167,9 @@ export default function ScrollImageSequence() {
         // (1920px en desktop, 900px en mobile).
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = window.innerWidth;
-        // On mobile, use a shorter panel (not full 100vh) so the frame's aspect
-        // ratio is closer to the source photo — that lets the image cover it
-        // with noticeably less crop/zoom while still leaving zero blank margin.
-        const h = w < 768 ? Math.round(window.innerHeight * 0.68) : window.innerHeight;
+        // On mobile, use a near-full-height panel so the scroll-scrub reads as
+        // "scrolling down the page" instead of a small boxed-in widget.
+        const h = w < 768 ? Math.round(window.innerHeight * 0.92) : window.innerHeight;
         if (w === 0 || h === 0) return;
         canvas.width = w * dpr;
         canvas.height = h * dpr;

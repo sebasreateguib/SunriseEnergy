@@ -1809,6 +1809,11 @@ body {
     object-fit: contain;
   }
 
+  .partner-logo-img--tight {
+    max-height: 4.6rem;
+    transform: scale(1.6);
+  }
+
   .about-section,
   .expertise-section,
   .services-section {
