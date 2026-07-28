@@ -67,13 +67,13 @@ const SEQUENCE_SOURCES = ['raw-assets/panel', 'raw-assets/panel2'];
  * lo único que hay que vigilar aquí (step 1 = los 241 frames = ~13 MB).
  */
 const SEQUENCES = [
-  // Desktop: los frames originales tal cual, a 1920x1080 y sin recomprimir.
-  // Pasarlos a WebP los dejaría MÁS pesados (~78 KB vs 57 KB), porque el WebP
-  // gastaría bits en reproducir los artefactos del JPEG de origen.
+  // Único set, usado tanto en desktop como en mobile: los frames originales
+  // tal cual, a 1920x1080 y sin recomprimir. Pasarlos a WebP los dejaría MÁS
+  // pesados (~78 KB vs 57 KB), porque el WebP gastaría bits en reproducir los
+  // artefactos del JPEG de origen. Un set separado y más liviano para mobile
+  // (menos frames y/o menor resolución) se probó y se descartó: el scrub se
+  // veía visiblemente entrecortado.
   { name: 'desktop', step: 3, copy: true, ext: 'jpg' },
-  // Mobile: 1920px es desperdicio en una pantalla de ~400pt de ancho. Al bajar
-  // a 900px desaparecen esos artefactos y ahí sí conviene WebP.
-  { name: 'mobile', step: 5, width: 900, quality: 68, ext: 'webp' },
 ];
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(0)} KB`;

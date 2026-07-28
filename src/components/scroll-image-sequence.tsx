@@ -7,11 +7,10 @@ import type { ComponentType } from "react";
  * `raw-assets/panel2/`. Si cambias el `step` o el `width` de ese script,
  * actualiza también estos números.
  */
+// Mobile usa los mismos frames 1920x1080 sin recomprimir que desktop: menos
+// frames o menor resolución generaban un scrub visiblemente entrecortado.
 const VARIANTS = {
-    // Desktop: frames originales 1920x1080 sin recomprimir.
     desktop: { dir: "/seq/desktop", frames: 81, ext: "jpg" },
-    // Mobile: los mismos frames a 900px en WebP.
-    mobile: { dir: "/seq/mobile", frames: 49, ext: "webp" },
 } as const;
 
 type Variant = (typeof VARIANTS)[keyof typeof VARIANTS];
@@ -89,11 +88,7 @@ const COPY_STAGES: {
 export default function ScrollImageSequence() {
     const [scrollScreens, setScrollScreens] = useState(6);
     const [reduceMotion, setReduceMotion] = useState(prefersReducedMotion);
-    // La variante (nº de frames y resolución) se fija en el primer render y no
-    // cambia al redimensionar, para no volver a descargar la secuencia.
-    const [variant] = useState(() =>
-        typeof window !== "undefined" && window.innerWidth < 768 ? VARIANTS.mobile : VARIANTS.desktop
-    );
+    const variant = VARIANTS.desktop;
     const frameCount = reduceMotion ? 1 : variant.frames;
 
     useEffect(() => {
