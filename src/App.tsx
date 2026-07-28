@@ -79,6 +79,7 @@ export function App() {
             decoding="async"
           />
           <div className="final-cta-overlay" />
+          <div className="final-cta-fade-top" aria-hidden="true" />
           <FinalCTA onOpenConsult={openConsult} />
           <FooterWithFadedBrand />
         </div>

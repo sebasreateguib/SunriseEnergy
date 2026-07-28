@@ -5,6 +5,7 @@ import arequipaImg from '../assets/arequipa-compressed.webp';
 import sealImg from '../assets/seal-compressed.webp';
 import sanfranciscoasisImg from '../assets/sanfranciscoasis-compressed.webp';
 import huanucoImg from '../assets/huanuco-compressed.webp';
+import supeImg from '../assets/supe-compressed.webp';
 
 const PROJECTS = [
   {
@@ -56,12 +57,12 @@ const PROJECTS = [
       'Diseño y configuración de una planta híbrida solar + eólica con sistema de almacenamiento BESS, incluyendo arquitectura del sistema y monitoreo de rendimiento.',
   },
   {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
+    image: supeImg,
     tag: 'Multi-sede · On-Grid',
     title: '4 Plantas Solares — Congregación Franciscana',
     badge: '110 kWp',
     description:
-      'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay, con gestión de materiales y capacitación al cliente final.',
+      'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay. Incluye 4 sistemas de bombeo de agua Lorentz (Alemania) de imanes permanentes, que abastecen reservorios de 16 m³ para consumo humano y 4 reservorios de cerca de 1000 m³ para riego por goteo.',
   },
   {
     gradient: 'bg-gradient-to-br from-white to-lime-300',

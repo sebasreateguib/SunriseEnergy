@@ -1412,6 +1412,17 @@ body {
   z-index: -1;
 }
 
+.final-cta-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(140px, 20vw, 260px);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.55) 28%, rgba(10, 15, 29, 0) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
 .final-cta-content {
   max-width: 680px;
   display: flex;

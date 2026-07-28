@@ -1,6 +1,6 @@
 import { ArrowUpRight, Leaf, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
-import heroImg from '../assets/panel.webp';
+import heroImg from '../assets/minicasa.webp';
 
 interface HeroProps {
   onOpenConsult: () => void;
@@ -13,7 +13,7 @@ export function Hero({ onOpenConsult }: HeroProps) {
       <div className="hero-image-col">
         <img
           src={heroImg}
-          alt="Casa con Paneles Solares - Sunrise Energy"
+          alt="Maqueta de casa sostenible con panel solar y aerogenerador - Sunrise Energy"
           className="hero-img"
           width={896}
           height={1200}
