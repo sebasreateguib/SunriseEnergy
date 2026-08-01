@@ -41,7 +41,7 @@ const defaultColumns: FooterColumn[] = [
         heading: 'Empresa',
         links: [
             { text: 'Nosotros', url: '#nosotros' },
-            { text: 'Expertise', url: '#expertise' },
+            { text: 'Experiencia', url: '#expertise' },
             { text: 'Clientes', url: '#clientes' },
         ],
     },
@@ -72,10 +72,10 @@ const itemVariants: Variants = {
 
 export default function FooterWithFadedBrand({
     brandName = 'Sunrise Energy',
-    tagline = 'Powering Your World With Solar.',
+    tagline = 'Impulsando tu mundo con energía solar.',
     columns = defaultColumns,
     socials = { whatsapp: 'https://wa.me/51948650409?text=Hola,%20quisiera%20más%20información%20sobre%20Sunrise%20Energy', linkedin: 'https://www.linkedin.com/in/miguel-reategui-05201924?utm_sou' },
-    copyright = '© 2026 Sunrise Energy. All rights reserved.',
+    copyright = '© 2026 Sunrise Energy Perú. Todos los derechos reservados.',
     legalLinks = defaultLegalLinks,
     className,
 }: FooterBrandProps) {
@@ -117,7 +117,7 @@ export default function FooterWithFadedBrand({
 
                     <motion.div variants={itemVariants} className='site-footer-social-col'>
                         <p className='site-footer-heading'>
-                            Social
+                            Redes
                         </p>
                         <div className='site-footer-social-icons'>
                             {socials.whatsapp && (

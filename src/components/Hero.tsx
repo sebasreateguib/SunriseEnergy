@@ -1,4 +1,4 @@
-import { ArrowUpRight, Leaf, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { ArrowUpRight, Leaf, ShieldCheck, TrendingUp, Zap } from 'lucide-react';
 import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
 import heroImg from '../assets/minicasa.webp';
 
@@ -54,7 +54,7 @@ export function Hero({ onOpenConsult }: HeroProps) {
               </AnnouncementTag>
               <AnnouncementTitle>
                 Energía de Nueva Generación
-                <Sparkles className="shrink-0 text-muted-foreground" size={16} />
+                <TrendingUp className="shrink-0 text-muted-foreground" size={16} />
               </AnnouncementTitle>
             </Announcement>
           </div>
