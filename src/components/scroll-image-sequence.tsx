@@ -110,19 +110,19 @@ export default function ScrollImageSequence() {
     const containerRef = useRef<HTMLDivElement>(null);
     const stickyRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const progressFillRef = useRef<HTMLDivElement>(null);
     const images = useRef<HTMLImageElement[]>([]);
     const frameIdx = useRef(0);
 
     const [shouldLoad, setShouldLoad] = useState(false);
     const [ready, setReady] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [scrollPct, setScrollPct] = useState(0);
 
-    // Active stage index + data
-    const activeIndex = COPY_STAGES.reduce(
-        (acc, stage, i) => (scrollPct >= stage.threshold ? i : acc),
-        0,
-    );
+    // Active stage index: sólo se llama setState al cruzar un umbral (6 veces
+    // máximo), no en cada frame de scroll. El progress bar se actualiza directo
+    // en el DOM vía progressFillRef para evitar cualquier re-render por scroll.
+    const [activeIndex, setActiveIndex] = useState(0);
+    const activeIndexRef = useRef(0);
     const activeCopy = COPY_STAGES[activeIndex];
     const ActiveIcon = activeCopy.icon;
 
@@ -282,12 +282,26 @@ export default function ScrollImageSequence() {
                 pinSpacing: false,
                 start: "top top",
                 end: "bottom bottom",
-                scrub: 0.1,
+                scrub: true,
                 onUpdate(self) {
                     const f = Math.min(frameCount - 1, Math.max(0, Math.round(self.progress * (frameCount - 1))));
                     frameIdx.current = f;
                     drawFrame(f);
-                    setScrollPct(self.progress);
+
+                    // Actualizar barra de progreso directamente en el DOM
+                    if (progressFillRef.current) {
+                        progressFillRef.current.style.width = `${Math.round(self.progress * 100)}%`;
+                    }
+
+                    // React state sólo al cruzar un umbral de etapa
+                    const newIdx = COPY_STAGES.reduce(
+                        (acc, stage, i) => (self.progress >= stage.threshold ? i : acc),
+                        0,
+                    );
+                    if (newIdx !== activeIndexRef.current) {
+                        activeIndexRef.current = newIdx;
+                        setActiveIndex(newIdx);
+                    }
                 },
             });
 
@@ -304,8 +318,6 @@ export default function ScrollImageSequence() {
             trigger?.kill();
         };
     }, [ready, reduceMotion, frameCount, drawFrame, syncSize, scrollScreens]);
-
-    const pct = Math.round(scrollPct * 100);
 
     return (
         <>
@@ -660,7 +672,7 @@ export default function ScrollImageSequence() {
                             <div className="seq-vignette" />
 
                             <div className="seq-top-progress">
-                                <div className="seq-top-progress-fill" style={{ width: `${pct}%` }} />
+                                <div ref={progressFillRef} className="seq-top-progress-fill" style={{ width: "0%" }} />
                             </div>
 
                             {/* Vertical stage tracker */}

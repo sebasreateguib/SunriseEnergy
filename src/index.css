@@ -76,9 +76,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -88,7 +87,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Base Layout Structure */
@@ -359,11 +358,10 @@ body {
   gap: 0.65rem;
   padding: 0.75rem 1rem;
   border-radius: 0.9rem;
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: rgba(15, 23, 42, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  will-change: transform;
   animation:
     heroCardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards,
     heroCardFloat 4.5s ease-in-out 1.1s infinite;
