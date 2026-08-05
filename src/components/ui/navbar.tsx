@@ -32,6 +32,26 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
         onOpenConsult()
     }
 
+    // El scroll suave se hace acá y no con `scroll-behavior: smooth` en html:
+    // esa regla se quitó a propósito (commit "scroll fixed") porque afectaba a
+    // toda la página, incluida la secuencia de scroll. El offset se lee del
+    // scroll-padding-top del <html> para no duplicar el alto del header.
+    const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        setMenuState(false)
+
+        const target = document.querySelector(href)
+        if (!target) return // sin destino, que el navegador haga el salto nativo
+
+        event.preventDefault()
+
+        const offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+        const top = target.getBoundingClientRect().top + window.scrollY - offset
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        window.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+        history.replaceState(null, '', href)
+    }
+
     return (
         <header className="absolute inset-x-0 top-0 z-50 px-0 lg:fixed lg:px-2">
             <div
@@ -67,6 +87,7 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
                         <li key={item.href}>
                             <a
                                 href={item.href}
+                                onClick={(e) => handleNavClick(e, item.href)}
                                 className="block rounded-full px-3.5 py-2 text-sm font-medium text-neutral-600 duration-150 hover:bg-black/5 hover:text-neutral-950">
                                 {item.name}
                             </a>
@@ -95,7 +116,7 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
                         <a
                             key={item.href}
                             href={item.href}
-                            onClick={() => setMenuState(false)}
+                            onClick={(e) => handleNavClick(e, item.href)}
                             className="rounded-xl px-3.5 py-2.5 text-base font-medium text-neutral-700 duration-150 hover:bg-black/5 hover:text-neutral-950">
                             {item.name}
                         </a>
