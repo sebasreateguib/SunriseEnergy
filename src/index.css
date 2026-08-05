@@ -342,76 +342,203 @@ body {
 .hero-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 40%);
+  /* La segunda parada oscurece el pie de la foto para que el refrán, que va
+     sin caja, mantenga contraste sobre cualquier zona clara de la imagen. */
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 40%),
+    linear-gradient(0deg, rgba(5, 9, 18, 0.72) 0%, rgba(5, 9, 18, 0.28) 22%, rgba(5, 9, 18, 0) 45%);
   pointer-events: none;
 }
 
-/* Floating Glass Stat Card on the Photo (Bottom Right) */
-.hero-floating-card {
+/* Glass Spec Sheet Card on the Photo (Top Left) */
+.hero-spec-card {
   position: absolute;
-  bottom: 4.5rem;
-  /* Moved up from 2rem */
-  right: 2rem;
+  top: calc(var(--header-h) + 1.75rem);
+  left: 2rem;
   z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.9rem;
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  will-change: transform;
-  animation:
-    heroCardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards,
-    heroCardFloat 4.5s ease-in-out 1.1s infinite;
+  width: min(18.5rem, calc(100% - 4rem));
+  padding: 1.15rem 1.25rem 1.05rem;
+  border-radius: 1.1rem;
+  background: rgba(10, 15, 29, 0.42);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+  animation: heroSpecCardIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
 }
 
-@keyframes heroCardIn {
+@keyframes heroSpecCardIn {
   from {
     opacity: 0;
-    transform: translateY(24px) rotate(-6deg);
+    transform: translateY(-18px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) rotate(-6deg);
+    transform: translateY(0);
   }
 }
 
-@keyframes heroCardFloat {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-6deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(-6deg);
-  }
+.hero-spec-card-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-brand-lime);
+  margin-bottom: 0.85rem;
 }
 
-.hero-floating-card-icon {
-  flex-shrink: 0;
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 50%;
-  background: var(--color-brand-lime);
-  color: var(--color-text-main);
-  display: grid;
-  place-items: center;
+.hero-spec-card-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.hero-floating-card-title {
+.hero-spec-card-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
   font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-spec-card-value {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hero-spec-card-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-spec-card-total-value {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.hero-floating-card-subtitle {
-  font-size: 0.7rem;
+.hero-spec-card-checks {
+  list-style: none;
+  margin: 0.95rem 0 0;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.hero-spec-card-checks li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-spec-card-check-icon {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(217, 249, 157, 0.14);
+  border: 1px solid rgba(217, 249, 157, 0.45);
+  color: var(--color-brand-lime);
+}
+
+/* Versión sobre fondo claro (columna de contenido, solo móvil) */
+.hero-content-checks {
+  display: none;
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.hero-content-checks li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: rgba(10, 15, 29, 0.75);
+}
+
+.hero-content-checks .hero-spec-card-check-icon {
+  background: rgba(190, 242, 100, 0.28);
+  border-color: rgba(132, 204, 22, 0.55);
+  color: #3f6212;
+}
+
+/* Refrán sobre el pie de la foto (reemplaza el antiguo card flotante) */
+.hero-quote {
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  bottom: 2.25rem;
+  z-index: 20;
+  margin: 0;
+  max-width: 24rem;
+  animation: heroQuoteIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
+}
+
+@keyframes heroQuoteIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-quote-text {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--color-brand-lime);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.hero-quote-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.03em;
+  /* Lima atenuada: acompaña al refrán sin competir con él. */
+  color: rgba(217, 249, 157, 0.72);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Guioncito lima antes del crédito, en lugar de un icono */
+.hero-quote-caption::before {
+  content: '';
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-brand-lime);
 }
 
 /* HERO RIGHT: CONTENT CONTAINER */
@@ -1588,21 +1715,39 @@ body {
     min-height: auto;
   }
 
+  /* max(): en tablets apaisadas 46vh no alcanzaba para la ficha + el card
+     inferior y la tarjeta se recortaba (el contenedor tiene overflow: hidden). */
   .hero-image-col {
-    min-height: 46vh;
-    height: 46vh;
+    min-height: max(46vh, 28rem);
+    height: max(46vh, 28rem);
   }
 
-  .hero-floating-card {
-    bottom: 2.5rem;
-    /* Moved up from 1.5rem */
+  .hero-spec-card {
+    top: calc(var(--header-h) + 1.25rem);
+    left: 1.5rem;
+    width: min(17rem, calc(100% - 3rem));
+    padding: 1rem 1.1rem 0.95rem;
+  }
+
+  .hero-spec-card-checks {
+    margin-top: 0.8rem;
+    padding-top: 0.75rem;
+    gap: 0.45rem;
+  }
+
+  .hero-spec-card-checks li {
+    font-size: 0.74rem;
+  }
+
+  .hero-quote {
+    left: 1.5rem;
     right: 1.5rem;
-    /* Sin left el card se ajusta a su contenido y queda anclado a la derecha,
-       igual que en escritorio. Con left y right a la vez se estiraba de borde a
-       borde, y al entrar el max-width de ≤640px se iba a la izquierda. */
-    left: auto;
-    max-width: calc(100% - 3rem);
-    padding: 0.65rem 0.9rem;
+    bottom: 1.75rem;
+    max-width: 22rem;
+  }
+
+  .hero-quote-text {
+    font-size: 1.4rem;
   }
 
   .hero-decor-blob {
@@ -1699,9 +1844,11 @@ body {
     height: 3rem;
   }
 
+  /* Igual que en tablet: piso en rem para que la ficha superior no se solape
+     con el card de "Ahorro Energético" en pantallas cortas. */
   .hero-image-col {
-    min-height: 38vh;
-    height: 38vh;
+    min-height: max(38vh, 24rem);
+    height: max(38vh, 24rem);
   }
 
   .about-image,
@@ -1722,33 +1869,62 @@ body {
     right: 0.75rem;
   }
 
-  .hero-floating-card {
-    gap: 0.55rem;
-    padding: 0.6rem 0.8rem;
-    max-width: 11.5rem;
-    right: 1rem;
+  /* La foto baja a 38vh: la ficha se compacta para no chocar con el card inferior. */
+  .hero-spec-card {
+    top: calc(var(--header-h) + 0.9rem);
+    left: 1rem;
+    width: min(14.5rem, calc(100% - 2rem));
+    padding: 0.8rem 0.9rem 0.75rem;
+    border-radius: 0.9rem;
   }
 
-  .hero-floating-card-icon {
-    width: 1.9rem;
-    height: 1.9rem;
+  .hero-spec-card-label {
+    font-size: 0.6rem;
+    margin-bottom: 0.6rem;
   }
 
-  .hero-floating-card-title {
-    font-size: 0.72rem;
+  .hero-spec-card-rows {
+    gap: 0.35rem;
   }
 
-  .hero-floating-card-subtitle {
-    font-size: 0.62rem;
-    line-height: 1.25;
+  .hero-spec-card-row,
+  .hero-spec-card-total {
+    font-size: 0.7rem;
+    gap: 0.6rem;
   }
 
-  .hero-floating-card-title {
-    font-size: 0.74rem;
+  .hero-spec-card-total {
+    margin-top: 0.65rem;
+    padding-top: 0.6rem;
   }
 
-  .hero-floating-card-subtitle {
-    font-size: 0.64rem;
+  .hero-spec-card-total-value {
+    font-size: 0.95rem;
+  }
+
+  /* En móvil la lista vive en la columna de texto, no sobre la foto. */
+  .hero-spec-card-checks {
+    display: none;
+  }
+
+  .hero-content-checks {
+    display: flex;
+  }
+
+  .hero-quote {
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 1.4rem;
+    max-width: none;
+  }
+
+  .hero-quote-text {
+    font-size: 1.25rem;
+  }
+
+  .hero-quote-caption {
+    margin-top: 0.55rem;
+    font-size: 0.7rem;
   }
 
   .hero-content-col {

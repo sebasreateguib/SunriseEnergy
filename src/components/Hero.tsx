@@ -1,10 +1,16 @@
-import { ArrowUpRight, Leaf, ShieldCheck, TrendingUp, Zap } from 'lucide-react';
+import { ArrowUpRight, Check, Leaf, ShieldCheck, TrendingUp } from 'lucide-react';
 import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
 import heroImg from '../assets/minicasa.webp';
 
 interface HeroProps {
   onOpenConsult: () => void;
 }
+
+const heroChecks = [
+  'Ingeniería y diseño propio',
+  'Instalación llave en mano',
+  'Monitoreo y mantenimiento',
+];
 
 export function Hero({ onOpenConsult }: HeroProps) {
   return (
@@ -22,15 +28,45 @@ export function Hero({ onOpenConsult }: HeroProps) {
         />
         <div className="hero-image-overlay" />
 
-        <div className="hero-floating-card">
-          <span className="hero-floating-card-icon">
-            <Zap size={16} />
-          </span>
-          <div>
-            <div className="hero-floating-card-title">Ahorro Energético</div>
-            <div className="hero-floating-card-subtitle">Hasta -40% en tu factura eléctrica</div>
+        <div className="hero-spec-card">
+          <div className="hero-spec-card-label">Proyecto tipo</div>
+          <div className="hero-spec-card-rows">
+            <div className="hero-spec-card-row">
+              <span>Potencia instalada</span>
+              <span className="hero-spec-card-value">50 kWp</span>
+            </div>
+            <div className="hero-spec-card-row">
+              <span>Ahorro mensual</span>
+              <span className="hero-spec-card-value">S/ 3,150</span>
+            </div>
+            <div className="hero-spec-card-row">
+              <span>Retorno de inversión</span>
+              <span className="hero-spec-card-value">3.2 años</span>
+            </div>
           </div>
+          <div className="hero-spec-card-total">
+            <span>Ahorro anual</span>
+            <span className="hero-spec-card-total-value">S/ 37,800</span>
+          </div>
+
+          <ul className="hero-spec-card-checks">
+            {heroChecks.map((item) => (
+              <li key={item}>
+                <span className="hero-spec-card-check-icon">
+                  <Check size={11} strokeWidth={3} />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
+
+        <figure className="hero-quote">
+          <blockquote className="hero-quote-text">“El sol sale para todos.”</blockquote>
+          <figcaption className="hero-quote-caption">
+            Nosotros lo convertimos en energía
+          </figcaption>
+        </figure>
       </div>
 
       {/* Columna Derecha: Contenido del Hero */}
@@ -68,6 +104,20 @@ export function Hero({ onOpenConsult }: HeroProps) {
             e instituciones mediante la integración de tecnologías renovables y soluciones de
             infraestructura sostenible de extremo a extremo.
           </p>
+
+          {/* Espejo de la lista de la ficha sobre la foto: en ≤640px la foto
+              queda muy baja para contenerla, así que ahí se muestra esta y se
+              oculta la de la tarjeta (solo una es visible a la vez). */}
+          <ul className="hero-content-checks">
+            {heroChecks.map((item) => (
+              <li key={item}>
+                <span className="hero-spec-card-check-icon">
+                  <Check size={11} strokeWidth={3} />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
 
           <div className="cta-group">
             <button className="btn-primary-pill" onClick={onOpenConsult}>
