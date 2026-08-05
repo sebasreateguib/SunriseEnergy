@@ -46,6 +46,9 @@ const IMAGES = [
   // sobra incluso en pantallas 2x (los 1600px de arriba son herencia).
   { in: 'src/assets/camisea.JPG', out: 'src/assets/camisea.webp', width: 900, quality: 78 },
   { in: 'src/assets/shivancoreni.JPG', out: 'src/assets/shivancoreni.webp', width: 900, quality: 78 },
+  // Par de fotos de trayectoria: se muestran a ~600px de ancho cada una
+  { in: 'src/assets/cuerpo.JPG', out: 'src/assets/cuerpo.webp', width: 1200, quality: 76 },
+  { in: 'src/assets/cuerpo2.JPG', out: 'src/assets/cuerpo2.webp', width: 1200, quality: 76 },
   { in: 'raw-assets/wind_turbines.png', out: 'public/wind_turbines.webp', width: 1600, quality: 76 },
   // Secciones internas
   { in: 'src/assets/foto.png', width: 1200, quality: 78 },

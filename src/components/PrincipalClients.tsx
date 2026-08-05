@@ -1,5 +1,7 @@
 import { Award, Globe2, ShieldCheck } from 'lucide-react';
 import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
+import cuerpoImg from '../assets/cuerpo.webp';
+import cuerpo2Img from '../assets/cuerpo2.webp';
 
 
 const INTERNACIONALES = [
@@ -48,6 +50,37 @@ export function PrincipalClients() {
         </p>
       </div>
 
+
+      <div className="trayectoria-gallery">
+        <figure className="trayectoria-photo">
+          <img
+            src={cuerpoImg}
+            alt="Curso de capacitación al Cuerpo de Paz: práctica de instalación de sistemas fotovoltaicos"
+            width={1200}
+            height={675}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <strong>Cuerpo de Paz — USA</strong>
+            Curso de capacitación · práctica de instalación
+          </figcaption>
+        </figure>
+        <figure className="trayectoria-photo">
+          <img
+            src={cuerpo2Img}
+            alt="Curso de capacitación al Cuerpo de Paz: sesión teórica en aula"
+            width={1200}
+            height={675}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <strong>Cuerpo de Paz — USA</strong>
+            Curso de capacitación · sesión en aula
+          </figcaption>
+        </figure>
+      </div>
 
       <div className="clients-detail-group">
         <div className="clients-detail-group-title">
