@@ -1,9 +1,9 @@
-import isometricImage from '../assets/isometric.webp';
+import serviciosImage from '../assets/servicios.webp';
 
 const SERVICES = [
   {
-    title: 'Diseño, Evaluación y Consultoría',
-    description: 'Consultoría, supervisión y auditoría energética fotovoltaica de principio a fin.',
+    title: 'Diseño, Evaluación, Supervisión y Consultoría Integral durante todo el procesos.',
+    description: 'Consultoría, supervisión y auditoría energética fotovoltaica de principio a fin. Sistemas fotovoltaicos On Grid, Off Grid y Sistemas Híbridos (Solar, Bess, Gas, Red Eléctrica y Motogenerador) con diferentes tipos de combustibles.',
   },
   {
     title: 'Expedientes Técnicos',
@@ -11,7 +11,7 @@ const SERVICES = [
   },
   {
     title: 'Suministro y Logística',
-    description: 'Abastecimiento y logística de equipos y componentes de generación.',
+    description: 'Abastecimiento y logística de equipos y componentes de generación energética.',
   },
   {
     title: 'Capacitación en O&M',
@@ -21,6 +21,10 @@ const SERVICES = [
     title: 'Cumplimiento Normativo',
     description: 'Alineación con el Código Nacional de Electricidad del Perú y normas técnicas internacionales.',
   },
+  {
+    title: 'Permisología',
+    description: 'Brindamos servicios de tramitación de autorizaciones y permisos para plantas solares.',
+  },
 ];
 
 export function Services() {
@@ -28,11 +32,11 @@ export function Services() {
     <section className="services-section" id="servicios">
       <div className="services-image-col">
         <img
-          src={isometricImage}
+          src={serviciosImage}
           alt="Servicios integrales de ingeniería solar de Sunrise Energy"
           className="services-image"
-          width={896}
-          height={1200}
+          width={1600}
+          height={872}
           loading="lazy"
           decoding="async"
         />

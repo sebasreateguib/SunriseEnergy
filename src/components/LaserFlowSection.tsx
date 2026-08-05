@@ -1,9 +1,41 @@
+import { useEffect, useRef, useState } from 'react';
 import LaserFlow from './LaserFlow';
 
+const PANEL_MAX_WIDTH = 900;
+
 export function LaserFlowSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    setWidth(el.clientWidth);
+    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // El haz y su abanico se miden en fracciones del ancho del viewport, pero el panel
+  // se topa en 900px: sin esto el laser se desborda por la derecha en pantalla completa.
+  const panelHalf = Math.min(width * 0.45, PANEL_MAX_WIDTH / 2);
+  const fanHalf = panelHalf * 0.6;
+  const horizontalSizing = width > 0 ? (2 * fanHalf) / width : 0.5;
+  const beamOffsetPx = Math.min(width * 0.16, Math.max(panelHalf - fanHalf - 16, 0));
+  const horizontalBeamOffset = width > 0 ? beamOffsetPx / width : 0.16;
+
   return (
-    <div className="relative h-[420px] overflow-hidden bg-[#0a0f1d] sm:h-[560px] md:h-[700px]">
-      <LaserFlow horizontalBeamOffset={0.16} verticalBeamOffset={0} color="#d9f99d" verticalSizing={2} horizontalSizing={0.5} />
+    <div
+      ref={containerRef}
+      className="relative h-[420px] overflow-hidden bg-[#0a0f1d] sm:h-[560px] md:h-[700px]"
+    >
+      <LaserFlow
+        horizontalBeamOffset={horizontalBeamOffset}
+        verticalBeamOffset={0}
+        color="#d9f99d"
+        verticalSizing={2}
+        horizontalSizing={horizontalSizing}
+      />
 
       <div className="absolute left-4 top-6 z-[6] max-w-[60%] text-left sm:left-6 sm:top-16 sm:max-w-xs md:left-16 md:top-20 md:max-w-sm">
         <span

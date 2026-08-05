@@ -10,6 +10,13 @@ const Whatsapp = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+const Mail = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+);
+
 const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -31,6 +38,7 @@ interface FooterBrandProps {
         whatsapp?: string;
         linkedin?: string;
     };
+    email?: string;
     copyright?: string;
     legalLinks?: { text: string; url: string }[];
     className?: string;
@@ -75,6 +83,7 @@ export default function FooterWithFadedBrand({
     tagline = 'Impulsando tu mundo con energía solar.',
     columns = defaultColumns,
     socials = { whatsapp: 'https://wa.me/51948650409?text=Hola,%20quisiera%20más%20información%20sobre%20Sunrise%20Energy', linkedin: 'https://www.linkedin.com/in/miguel-reategui-05201924?utm_sou' },
+    email = 'sunriseenergy@hotmail.com',
     copyright = '© 2026 Sunrise Energy Perú. Todos los derechos reservados.',
     legalLinks = defaultLegalLinks,
     className,
@@ -117,6 +126,17 @@ export default function FooterWithFadedBrand({
 
                     <motion.div variants={itemVariants} className='site-footer-social-col'>
                         <p className='site-footer-heading'>
+                            Contacto
+                        </p>
+                        <a
+                            href={`mailto:${email}?subject=${encodeURIComponent('Consulta sobre Sunrise Energy')}`}
+                            className='site-footer-mail-btn'
+                        >
+                            <Mail className='site-footer-mail-svg' />
+                            <span>Escríbenos</span>
+                        </a>
+
+                        <p className='site-footer-heading site-footer-heading-spaced'>
                             Redes
                         </p>
                         <div className='site-footer-social-icons'>
