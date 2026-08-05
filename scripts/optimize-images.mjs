@@ -42,6 +42,10 @@ const IMAGES = [
   { in: 'src/assets/seal-compressed.jpg', width: 1600, quality: 76 },
   { in: 'src/assets/sanfranciscoasis-compressed.jpg', width: 1600, quality: 76 },
   { in: 'src/assets/huanuco-compressed.jpg', width: 1600, quality: 76 },
+  // Card de proyecto: se muestra a 340px como máximo, así que 900px basta y
+  // sobra incluso en pantallas 2x (los 1600px de arriba son herencia).
+  { in: 'src/assets/camisea.JPG', out: 'src/assets/camisea.webp', width: 900, quality: 78 },
+  { in: 'src/assets/shivancoreni.JPG', out: 'src/assets/shivancoreni.webp', width: 900, quality: 78 },
   { in: 'raw-assets/wind_turbines.png', out: 'public/wind_turbines.webp', width: 1600, quality: 76 },
   // Secciones internas
   { in: 'src/assets/foto.png', width: 1200, quality: 78 },

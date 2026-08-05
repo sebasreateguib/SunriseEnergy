@@ -1,11 +1,12 @@
 import { ProjectShowcase } from './ui/clipped-video-tab';
-import minicasaImg from '../assets/minicasa.webp';
 import arequipa2Img from '../assets/arequipa2-compressed.webp';
 import arequipaImg from '../assets/arequipa-compressed.webp';
 import sealImg from '../assets/seal-compressed.webp';
 import sanfranciscoasisImg from '../assets/sanfranciscoasis-compressed.webp';
 import huanucoImg from '../assets/huanuco-compressed.webp';
 import supeImg from '../assets/supe-compressed.webp';
+import camiseaImg from '../assets/camisea.webp';
+import shivancoreniImg from '../assets/shivancoreni.webp';
 
 const PROJECTS = [
   {
@@ -65,7 +66,7 @@ const PROJECTS = [
       'Diseño, instalación y puesta en marcha de plantas fotovoltaicas en Lima, Cenáculo (Supe), Huaycán y Manchay. Incluye 4 sistemas de bombeo de agua Lorentz (Alemania) de imanes permanentes, que abastecen reservorios de 16 m³ para consumo humano y 4 reservorios de cerca de 1000 m³ para riego por goteo.',
   },
   {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
+    image: camiseaImg,
     tag: 'Electrificación Rural · Amazonía',
     title: 'Pluspetrol — Lotes 88, 56 y 1AB',
     badge: '20 MWp',
@@ -73,23 +74,7 @@ const PROJECTS = [
       'Soluciones energéticas sostenibles para más de 200 comunidades nativas: electrificación rural, bombeo de agua, refrigeración de vacunas y telecomunicaciones satelitales.',
   },
   {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
-    tag: 'Salud · On-Grid',
-    title: 'Sistema Solar — Centros de Salud CEDOSAC',
-    badge: '20 kWp',
-    description:
-      'Desarrollo de sistemas fotovoltaicos para centros de salud rurales en Pucallpa, garantizando energía continua para servicios críticos.',
-  },
-  {
-    gradient: 'bg-gradient-to-br from-white to-lime-300',
-    tag: 'Conectividad Rural · Solar',
-    title: 'Sistemas Fotovoltaicos — Misiones Dominicanas',
-    badge: '100 kWp',
-    description:
-      'Implementación de sistemas solares para asegurar comunicación satelital e internet en misiones rurales aisladas del Perú.',
-  },
-  {
-    image: minicasaImg,
+    image: shivancoreniImg,
     tag: 'Comunidades Nativas · Río Urubamba',
     title: 'Electrificación Solar — Camisea (Shell)',
     badge: '150 kWp',
