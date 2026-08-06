@@ -7,7 +7,7 @@ const SERVICES = [
   },
   {
     title: 'Expedientes Técnicos',
-    description: 'Formulación y evaluación de expedientes técnicos energéticos.',
+    description: 'Formulación y evaluación de expedientes técnicos energéticos. Ingenieria basica y de detalle. Estudios económicos, viabilidad y rentabilidad.',
   },
   {
     title: 'Suministro y Logística',
@@ -15,11 +15,11 @@ const SERVICES = [
   },
   {
     title: 'Capacitación en O&M',
-    description: 'Formación especializada en Operación y Mantenimiento de plantas solares.',
+    description: 'Formación y supervisión especializada en Operación y Mantenimiento de plantas solares.',
   },
   {
     title: 'Cumplimiento Normativo',
-    description: 'Alineación con el Código Nacional de Electricidad del Perú y normas técnicas internacionales.',
+    description: 'Alineación con el Código Nacional de Electricidad del Perú y normas técnicas nacionales (NTP-IEC) e internacionales (IEC).',
   },
   {
     title: 'Permisología',
