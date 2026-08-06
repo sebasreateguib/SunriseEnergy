@@ -136,7 +136,7 @@ export function Hero({ onOpenConsult }: HeroProps) {
             </div>
             <div className="hero-trust-item">
               <Leaf size={18} />
-              <span>On-Grid &amp; Off-Grid</span>
+              <span>On-Grid, Off-Grid e Híbridos</span>
             </div>
           </div>
         </div>
