@@ -2464,15 +2464,21 @@ body {
   background-color: var(--color-brand-lime);
   border: 1px solid rgba(101, 163, 13, 0.35);
   color: var(--color-text-main);
+  font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
 .site-footer-mail-btn:hover {
   filter: brightness(0.95);
   transform: translateY(-1px);
+}
+
+.site-footer-mail-btn:active {
+  transform: translateY(0);
 }
 
 .site-footer-mail-svg {
