@@ -43,9 +43,8 @@ const EXPERTISE_ITEMS: ExpertiseItem[] = [
 export function Expertise() {
   return (
     <section className="expertise-section" id="expertise">
-      {/* Halo lima + retícula técnica de fondo; decorativos, van fuera del flujo. */}
+      {/* Halo lima de fondo; decorativo, va fuera del flujo. */}
       <div className="expertise-glow" aria-hidden="true" />
-      <div className="expertise-mesh" aria-hidden="true" />
 
       <div className="expertise-container">
         <div className="section-heading expertise-heading">

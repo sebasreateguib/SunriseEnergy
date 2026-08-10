@@ -1158,20 +1158,6 @@ body {
   z-index: -1;
 }
 
-/* Retícula de ingeniería, desvanecida hacia los bordes */
-.expertise-mesh {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(10, 15, 29, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 15, 29, 0.055) 1px, transparent 1px);
-  background-size: 74px 74px;
-  mask-image: radial-gradient(75% 60% at 50% 40%, #000 20%, transparent 100%);
-  -webkit-mask-image: radial-gradient(75% 60% at 50% 40%, #000 20%, transparent 100%);
-  pointer-events: none;
-  z-index: -1;
-}
-
 .expertise-container {
   position: relative;
   max-width: var(--container-max);
@@ -1369,13 +1355,18 @@ body {
   display: block;
 }
 
-.services-copy-col .section-title {
-  text-align: left;
+/* Cruza las dos columnas: es el título de la sección, no de la columna de
+   texto. El margen inferior lo pone el row-gap del grid. */
+.services-heading {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
 }
 
 .services-list {
   list-style: none;
-  margin: 2rem 0 0;
+  /* Sin margen superior: el h2 que lo justificaba ahora vive en el encabezado
+     de sección, y la lista arranca a la altura de la foto. */
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -2134,8 +2125,9 @@ body {
     gap: 2.5rem;
   }
 
+  /* Sin order: el orden del DOM ya apila encabezado → foto → lista. Con
+     order:-1 la foto se colaba por delante del título de la sección. */
   .services-image-col {
-    order: -1;
     position: static;
   }
 
@@ -2143,8 +2135,7 @@ body {
     aspect-ratio: 16 / 9;
   }
 
-  .services-copy-col,
-  .services-copy-col .section-title {
+  .services-copy-col {
     text-align: center;
     align-items: center;
   }
@@ -2389,10 +2380,6 @@ body {
 
   .expertise-eyebrow {
     font-size: 0.65rem;
-  }
-
-  .expertise-mesh {
-    background-size: 52px 52px;
   }
 
   .services-list-item {

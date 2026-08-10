@@ -30,6 +30,14 @@ const SERVICES = [
 export function Services() {
   return (
     <section className="services-section" id="servicios">
+      <div className="section-heading services-heading">
+        <h2 className="section-title">Cobertura integral de tu proyecto energético</h2>
+        <p className="section-subtitle">
+          Del diseño y la ingeniería al suministro, la permisología y la operación: acompañamos
+          cada etapa del proyecto con un solo interlocutor técnico.
+        </p>
+      </div>
+
       <div className="services-image-col">
         <img
           src={serviciosImage}
@@ -43,8 +51,6 @@ export function Services() {
       </div>
 
       <div className="services-copy-col">
-        <h2 className="section-title">Cobertura integral de tu proyecto energético</h2>
-
         <ol className="services-list">
           {SERVICES.map((service, index) => (
             <li className="services-list-item" key={service.title}>
