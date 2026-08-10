@@ -309,7 +309,12 @@ body {
 /* HERO SECTION MAIN CONTAINER */
 .hero-layout {
   width: 100%;
-  min-height: calc(75vh - var(--header-h));
+  /* Altura marcada por el contenido, no por el viewport: con un min-height en
+     vh el hero sobraba de alto en pantallas grandes y la columna de texto, que
+     va centrada, dejaba una franja vacía arriba y abajo. El suelo en rem evita
+     que la foto quede más baja que la ficha flotante que lleva encima, y de
+     paso empuja el título de la sección siguiente fuera del primer pantallazo. */
+  min-height: 52rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: stretch;
@@ -325,7 +330,13 @@ body {
   background-color: #0c1524;
 }
 
+/* Absoluta a propósito: el archivo es vertical (896×1200) y en el flujo, con
+   height:100% sin altura definida arriba, se dibujaba con su proporción real
+   (~940px en una columna de 700px) y era ella quien fijaba el alto del hero.
+   Fuera del flujo, manda la columna de texto y el sobrante desaparece. */
 .hero-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -353,7 +364,7 @@ body {
 /* Glass Spec Sheet Card on the Photo (Top Left) */
 .hero-spec-card {
   position: absolute;
-  top: calc(var(--header-h) + 1.75rem);
+  top: calc(var(--header-h) + 3rem);
   left: 2rem;
   z-index: 20;
   width: min(18.5rem, calc(100% - 4rem));
@@ -546,7 +557,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 5rem 4rem 5.5rem;
+  /* El padding superior despeja el navbar flotante, que termina a 4.55rem del
+     borde: con 4rem el badge quedaba por debajo de la barra. */
+  padding: calc(var(--header-h) + 1.25rem) 5rem 4rem 5.5rem;
   background-color: var(--color-bg-content);
   position: relative;
   z-index: 10;
@@ -851,6 +864,70 @@ body {
   width: 100%;
 }
 
+/* ============================= */
+/* ENERGY MARQUEE (BAJO EL HERO)  */
+/* ============================= */
+/* Banda lima a todo el ancho que remata el hero y encadena con el bloque de
+   stats. Misma mecánica que el marquee de logos: dos grupos idénticos y un
+   translateX(-50%), así el bucle empalma sin salto. */
+.energy-marquee {
+  --energy-marquee-duration: 42s;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-brand-lime-hover);
+  border-top: 1px solid rgba(10, 15, 29, 0.12);
+  border-bottom: 1px solid rgba(10, 15, 29, 0.12);
+}
+
+.energy-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: energy-marquee var(--energy-marquee-duration) linear infinite;
+}
+
+.energy-marquee:hover .energy-marquee-track {
+  animation-play-state: paused;
+}
+
+.energy-marquee-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.energy-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.75rem;
+  padding-right: 2.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-main);
+  padding-block: 1.05rem;
+}
+
+.energy-marquee-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(10, 15, 29, 0.45);
+  flex: 0 0 auto;
+}
+
+@keyframes energy-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .stats-block {
   background: #ffffff;
 }
@@ -942,6 +1019,23 @@ body {
   }
 
   .clients-marquee-group[aria-hidden='true'] {
+    display: none;
+  }
+
+  /* Sin animación la banda se convierte en una lista centrada y envuelta. */
+  .energy-marquee-track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .energy-marquee-group {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.35rem var(--section-px);
+  }
+
+  .energy-marquee-group[aria-hidden='true'] {
     display: none;
   }
 }
@@ -1036,14 +1130,14 @@ body {
 /* ============================= */
 /* EXPERTISE SECTION              */
 /* ============================= */
-/* Sección oscura: corta el bloque blanco entre About y Services y le da
-   al catálogo de tecnologías un registro más editorial. */
+/* Sección clara: aterriza el tramo oscuro del LaserFlow que va justo encima y
+   devuelve la página a su registro editorial. */
 .expertise-section {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   padding: 8rem var(--section-px);
-  background: #070b14;
+  background: var(--color-bg-content);
 }
 
 /* Halo lima detrás del encabezado */
@@ -1056,8 +1150,8 @@ body {
   transform: translateX(-50%);
   background: radial-gradient(
     50% 50% at 50% 50%,
-    rgba(190, 242, 100, 0.22) 0%,
-    rgba(190, 242, 100, 0.07) 45%,
+    rgba(190, 242, 100, 0.34) 0%,
+    rgba(190, 242, 100, 0.12) 45%,
     transparent 72%
   );
   pointer-events: none;
@@ -1069,8 +1163,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(10, 15, 29, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 15, 29, 0.055) 1px, transparent 1px);
   background-size: 74px 74px;
   mask-image: radial-gradient(75% 60% at 50% 40%, #000 20%, transparent 100%);
   -webkit-mask-image: radial-gradient(75% 60% at 50% 40%, #000 20%, transparent 100%);
@@ -1094,11 +1188,11 @@ body {
 }
 
 .expertise-heading .section-title {
-  color: #ffffff;
+  color: var(--color-text-main);
 }
 
 .expertise-heading .section-subtitle {
-  color: rgba(226, 232, 240, 0.62);
+  color: var(--color-text-subtle);
 }
 
 .expertise-eyebrow {
@@ -1109,7 +1203,9 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-brand-lime);
+  /* Sobre blanco el lima de marca no tiene contraste: se usa el verde oscuro
+     de la marca, el mismo de las cifras del bloque de trayectoria. */
+  color: #587b27;
 }
 
 .expertise-eyebrow::before,
@@ -1117,11 +1213,11 @@ body {
   content: '';
   width: 1.75rem;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(217, 249, 157, 0.7));
+  background: linear-gradient(90deg, transparent, rgba(88, 123, 39, 0.55));
 }
 
 .expertise-eyebrow::after {
-  background: linear-gradient(90deg, rgba(217, 249, 157, 0.7), transparent);
+  background: linear-gradient(90deg, rgba(88, 123, 39, 0.55), transparent);
 }
 
 /* Matriz de celdas: el gap de 1px sobre un fondo claro hace de hairline, así
@@ -1131,8 +1227,8 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 15, 29, 0.1);
+  border: 1px solid rgba(10, 15, 29, 0.1);
   border-radius: var(--radius-card);
   overflow: hidden;
 }
@@ -1140,7 +1236,7 @@ body {
 .expertise-card {
   position: relative;
   isolation: isolate;
-  background: #0a0f1d;
+  background: #ffffff;
   padding: 2.5rem 2rem 2.75rem;
   display: flex;
   flex-direction: column;
@@ -1157,7 +1253,7 @@ body {
   inset: 0;
   background: radial-gradient(
     120% 100% at 0% 0%,
-    rgba(190, 242, 100, 0.13) 0%,
+    rgba(190, 242, 100, 0.3) 0%,
     transparent 60%
   );
   opacity: 0;
@@ -1174,14 +1270,14 @@ body {
   left: 0;
   height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, var(--color-brand-lime), rgba(190, 242, 100, 0));
+  background: linear-gradient(90deg, var(--color-brand-lime-hover), rgba(190, 242, 100, 0));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .expertise-card:hover {
-  background: #0d1424;
+  background: #fcfdfb;
 }
 
 .expertise-card:hover::before,
@@ -1198,21 +1294,21 @@ body {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(10, 15, 29, 0.24);
   transition: color var(--transition-normal);
 }
 
 .expertise-card:hover .expertise-card-index {
-  color: rgba(217, 249, 157, 0.75);
+  color: rgba(88, 123, 39, 0.8);
 }
 
 .expertise-card-icon {
   width: 3.1rem;
   height: 3.1rem;
   border-radius: 0.95rem;
-  background: rgba(217, 249, 157, 0.09);
-  border: 1px solid rgba(217, 249, 157, 0.22);
-  color: var(--color-brand-lime);
+  background: rgba(190, 242, 100, 0.22);
+  border: 1px solid rgba(88, 123, 39, 0.28);
+  color: #587b27;
   display: grid;
   place-items: center;
   transition:
@@ -1222,9 +1318,9 @@ body {
 }
 
 .expertise-card:hover .expertise-card-icon {
-  background: rgba(217, 249, 157, 0.16);
-  border-color: rgba(217, 249, 157, 0.45);
-  box-shadow: 0 0 26px -6px rgba(190, 242, 100, 0.5);
+  background: rgba(190, 242, 100, 0.4);
+  border-color: rgba(88, 123, 39, 0.5);
+  box-shadow: 0 0 26px -6px rgba(88, 123, 39, 0.45);
 }
 
 .expertise-card h3 {
@@ -1232,14 +1328,14 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--color-text-main);
   margin: 0;
 }
 
 .expertise-card p {
   font-size: 0.92rem;
   line-height: 1.6;
-  color: rgba(226, 232, 240, 0.55);
+  color: var(--color-text-subtle);
   margin: 0;
 }
 
@@ -2077,6 +2173,18 @@ body {
 @media (max-width: 640px) {
   :root {
     --header-h: 3.75rem;
+  }
+
+  .energy-marquee {
+    --energy-marquee-duration: 30s;
+  }
+
+  .energy-marquee-item {
+    gap: 1.6rem;
+    padding-right: 1.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.13em;
+    padding-block: 0.8rem;
   }
 
   .site-header {

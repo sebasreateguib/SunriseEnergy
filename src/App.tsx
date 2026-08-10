@@ -5,6 +5,7 @@ import { About } from './components/About';
 import { CEO } from './components/CEO';
 import { ClientsStrip } from './components/ClientsStrip';
 import { ConsultModal } from './components/ConsultModal';
+import { EnergyMarquee } from './components/EnergyMarquee';
 import { Expertise } from './components/Expertise';
 import { FinalCTA } from './components/FinalCTA';
 import FooterWithFadedBrand from './components/ui/footer';
@@ -18,8 +19,8 @@ import { WhatsAppFloat } from './components/WhatsAppFloat';
 import { Reveal } from './components/ui/reveal';
 
 // El shader de LaserFlow arrastra three.js (~150 KB gzip): se carga en su
-// propio chunk, después del hero. El placeholder reserva la misma altura para
-// que no haya salto de layout.
+// propio chunk. El placeholder reserva la misma altura para que no haya salto
+// de layout.
 const LaserFlowSection = lazy(() =>
   import('./components/LaserFlowSection').then((m) => ({ default: m.LaserFlowSection }))
 );
@@ -38,9 +39,7 @@ export function App() {
     <div className="page">
       <Header onOpenConsult={openConsult} />
       <Hero onOpenConsult={openConsult} />
-      <Suspense fallback={laserFlowPlaceholder}>
-        <LaserFlowSection />
-      </Suspense>
+      <EnergyMarquee />
       <Reveal direction="left">
         <ClientsStrip />
       </Reveal>
@@ -48,6 +47,11 @@ export function App() {
       <Reveal direction="right">
         <About />
       </Reveal>
+      {/* El laser abre el tramo oscuro y las capacidades técnicas lo continúan
+          justo debajo, ya como sección propia. */}
+      <Suspense fallback={laserFlowPlaceholder}>
+        <LaserFlowSection />
+      </Suspense>
       <Reveal direction="left">
         <Expertise />
       </Reveal>
