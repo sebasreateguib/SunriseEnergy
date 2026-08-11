@@ -1,25 +1,40 @@
-const ENERGY_TERMS = [
-  'Energía Solar Fotovoltaica',
-  'Autoconsumo Industrial',
-  'Sistemas On-Grid y Off-Grid',
-  'Eficiencia Energética',
-  'Almacenamiento en Baterías',
-  'Energía Eólica',
-  'Biomasa',
-  'Hidroenergía',
-  'Geotermia',
-  'Solar Térmica',
-  'Cero Emisiones',
+import type { LucideIcon } from 'lucide-react';
+import {
+  Sun,
+  Factory,
+  Cable,
+  Gauge,
+  BatteryCharging,
+  Wind,
+  Leaf,
+  Droplets,
+  Flame,
+  ThermometerSun,
+  TreePine,
+} from 'lucide-react';
+
+const ENERGY_ITEMS: { label: string; icon: LucideIcon }[] = [
+  { label: 'Energía Solar Fotovoltaica', icon: Sun },
+  { label: 'Autoconsumo Industrial', icon: Factory },
+  { label: 'Sistemas On-Grid y Off-Grid', icon: Cable },
+  { label: 'Eficiencia Energética', icon: Gauge },
+  { label: 'Almacenamiento en Baterías', icon: BatteryCharging },
+  { label: 'Energía Eólica', icon: Wind },
+  { label: 'Biomasa', icon: Leaf },
+  { label: 'Hidroenergía', icon: Droplets },
+  { label: 'Geotermia', icon: Flame },
+  { label: 'Solar Térmica', icon: ThermometerSun },
+  { label: 'Cero Emisiones', icon: TreePine },
 ];
 
 /** Un grupo completo; se clona para que el bucle empalme sin salto. */
 function TermGroup({ clone = false }: { clone?: boolean }) {
   return (
     <div className="energy-marquee-group" aria-hidden={clone || undefined}>
-      {ENERGY_TERMS.map((term) => (
-        <span className="energy-marquee-item" key={term}>
-          <span className="energy-marquee-dot" aria-hidden="true" />
-          {term}
+      {ENERGY_ITEMS.map(({ label, icon: Icon }) => (
+        <span className="energy-marquee-item" key={label}>
+          <Icon className="energy-marquee-icon" size={14} aria-hidden="true" />
+          {label}
         </span>
       ))}
     </div>
