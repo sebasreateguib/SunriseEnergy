@@ -1208,7 +1208,23 @@ body {
   isolation: isolate;
   overflow: hidden;
   padding: 8rem var(--section-px);
-  background: var(--color-bg-content);
+  border-top: 1px solid rgba(190, 242, 100, 0.25);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(190, 242, 100, 0.14) 0px,
+      rgba(190, 242, 100, 0.14) 1px,
+      transparent 1px,
+      transparent 44px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(190, 242, 100, 0.14) 0px,
+      rgba(190, 242, 100, 0.14) 1px,
+      transparent 1px,
+      transparent 44px
+    ),
+    var(--color-bg-content);
 }
 
 /* Halo lima detrás del encabezado */

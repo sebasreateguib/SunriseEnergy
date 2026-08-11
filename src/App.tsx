@@ -40,6 +40,9 @@ export function App() {
       <Header onOpenConsult={openConsult} />
       <Hero onOpenConsult={openConsult} />
       <EnergyMarquee />
+      <Suspense fallback={laserFlowPlaceholder}>
+        <LaserFlowSection />
+      </Suspense>
       <Reveal direction="left">
         <ClientsStrip />
       </Reveal>
@@ -47,11 +50,7 @@ export function App() {
       <Reveal direction="right">
         <About />
       </Reveal>
-      {/* El laser abre el tramo oscuro y las capacidades técnicas lo continúan
-          justo debajo, ya como sección propia. */}
-      <Suspense fallback={laserFlowPlaceholder}>
-        <LaserFlowSection />
-      </Suspense>
+
       <Reveal direction="left">
         <Expertise />
       </Reveal>
