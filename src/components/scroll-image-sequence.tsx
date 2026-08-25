@@ -3,17 +3,31 @@ import { Droplets, Leaf, Plug, Settings, ShieldCheck, Zap } from "lucide-react";
 import type { ComponentType } from "react";
 
 /**
- * Los frames los genera `scripts/optimize-images.mjs` a partir de
- * `raw-assets/panel2/`. Si cambias el `step` o el `width` de ese script,
- * actualiza también estos números.
+ * Secuencia de armado del panel: los 240 frames 1920x1080 de
+ * `public/solar-panel/`, copiados sin recomprimir. El manifest de
+ * `/seq/solar` guarda el conteo; si se regenera, actualizar aquí.
  */
-// Mobile usa los mismos frames 1920x1080 sin recomprimir que desktop: menos
-// frames o menor resolución generaban un scrub visiblemente entrecortado.
+// Mobile usa los mismos frames sin recomprimir que desktop: menos frames o
+// menor resolución generaban un scrub visiblemente entrecortado.
 const VARIANTS = {
-    desktop: { dir: "/seq/desktop", frames: 81, ext: "jpg" },
+    desktop: { dir: "/seq/solar", frames: 240, ext: "jpg" },
 } as const;
 
 type Variant = (typeof VARIANTS)[keyof typeof VARIANTS];
+
+/** Altura del panel en mobile, como fracción del viewport. */
+const MOBILE_PANEL_HEIGHT = 0.96;
+
+/**
+ * Cuánto se aleja el encuadre en mobile respecto a `cover`. Un viewport 9:19.5
+ * contra un frame 16:9 recorta a ~1/3 del ancho; a 0.74 se ve el ~41%. Las
+ * franjas que deja el zoom no se rellenan con el fondo de la página — el borde
+ * del frame es gris (~#afb0b2) y el corte cantaría — sino estirando las propias
+ * filas de borde, que son casi planas, así que la pared y el suelo siguen.
+ */
+const MOBILE_ZOOM = 0.74;
+/** Filas de origen que se estiran para rellenar cada franja. */
+const EDGE_ROWS = 2;
 
 /** Frames que deben estar listos antes de mostrar la secuencia. */
 const GATE_FRAMES = 8;
@@ -41,7 +55,7 @@ const COPY_STAGES: {
             tag: "Generación",
             headline: "Solar PV / Baterías, Aerogeneradores",
             description: "Solución energética con energías renovables ecoeficientes y rentables.",
-            accent: "#a3e635",
+            accent: "#4d7c0f",
         },
         {
             threshold: 1 / 6,
@@ -49,7 +63,7 @@ const COPY_STAGES: {
             tag: "Bioenergía",
             headline: "Biogás / Biomasa",
             description: "Solución que aprovecha los residuos orgánicos e inorgánicos para producir biogás y bioabono.",
-            accent: "#facc15",
+            accent: "#b45309",
         },
         {
             threshold: 2 / 6,
@@ -57,7 +71,7 @@ const COPY_STAGES: {
             tag: "Calidad",
             headline: "Consultoría, Certificación y Auditoría Energética",
             description: "Aseguramiento de la calidad de componentes e instalación, cumpliendo la normatividad técnica.",
-            accent: "#22d3ee",
+            accent: "#0e7490",
         },
         {
             threshold: 3 / 6,
@@ -65,7 +79,7 @@ const COPY_STAGES: {
             tag: "O&M",
             headline: "O&M Sistemas Renovables",
             description: "Gestión y administración para la operación y mantenimiento de los sistemas de energías renovables.",
-            accent: "#c084fc",
+            accent: "#7e22ce",
         },
         {
             threshold: 4 / 6,
@@ -73,7 +87,7 @@ const COPY_STAGES: {
             tag: "Bombeo",
             headline: "Bombeo de Agua Solar",
             description: "Instalaciones de bombeo de agua solar para mejorar la rentabilidad y sostenibilidad.",
-            accent: "#60a5fa",
+            accent: "#1d4ed8",
         },
         {
             threshold: 5 / 6,
@@ -81,7 +95,7 @@ const COPY_STAGES: {
             tag: "Híbrido",
             headline: "Sistemas Híbridos / Generación Distribuida",
             description: "Generación y uso rentable de energías renovables en sistemas conectados a la red y autoconsumo.",
-            accent: "#fb7185",
+            accent: "#be123c",
         },
     ];
 
@@ -113,6 +127,9 @@ export default function ScrollImageSequence() {
     const progressFillRef = useRef<HTMLDivElement>(null);
     const images = useRef<HTMLImageElement[]>([]);
     const frameIdx = useRef(0);
+    // Lo fija syncSize() a partir del ancho, para no leer window en cada frame
+    // del scrub.
+    const isMobile = useRef(false);
 
     const [shouldLoad, setShouldLoad] = useState(false);
     const [ready, setReady] = useState(false);
@@ -142,14 +159,30 @@ export default function ScrollImageSequence() {
         const ih = img.naturalHeight;
         const cw = canvas.width;
         const ch = canvas.height;
-        // True cover fit: image fills the canvas edge-to-edge, no letterbox margins
-        const ratio = Math.max(cw / iw, ch / ih);
 
-        const dx = (cw - iw * ratio) / 2;
-        const dy = (ch - ih * ratio) / 2;
+        const cover = Math.max(cw / iw, ch / ih);
+        // El zoom de mobile nunca baja de llenar el ancho: así las únicas
+        // franjas posibles son horizontales, que son las que sabemos rellenar.
+        const ratio = isMobile.current
+            ? Math.max(cover * MOBILE_ZOOM, cw / iw)
+            : cover;
+
+        const dw = iw * ratio;
+        const dh = ih * ratio;
+        const dx = (cw - dw) / 2;
+        const dy = (ch - dh) / 2;
 
         ctx.clearRect(0, 0, cw, ch);
-        ctx.drawImage(img, 0, 0, iw, ih, dx, dy, iw * ratio, ih * ratio);
+
+        // Franjas: se estira la fila de borde del propio frame en lugar de
+        // dejar el fondo de la página, que se vería como un recorte. Se solapa
+        // 1px con la imagen para que el redondeo no deje una línea.
+        if (dy > 0.5) {
+            ctx.drawImage(img, 0, 0, iw, EDGE_ROWS, dx, 0, dw, dy + 1);
+            ctx.drawImage(img, 0, ih - EDGE_ROWS, iw, EDGE_ROWS, dx, dy + dh - 1, dw, ch - dy - dh + 1);
+        }
+
+        ctx.drawImage(img, 0, 0, iw, ih, dx, dy, dw, dh);
     }, [frameCount]);
 
     // ─── Sync canvas size to viewport ───────────────────────────────────────
@@ -162,10 +195,11 @@ export default function ScrollImageSequence() {
         // (1920px en desktop, 900px en mobile).
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = window.innerWidth;
-        // On mobile, use a near-full-height panel so the scroll-scrub reads as
-        // "scrolling down the page" instead of a small boxed-in widget.
-        const h = w < 768 ? Math.round(window.innerHeight * 0.92) : window.innerHeight;
+        // El panel ocupa casi todo el viewport para que el scrub se lea como
+        // "scrolleando la página" y no como un widget encajonado.
+        const h = w < 768 ? Math.round(window.innerHeight * MOBILE_PANEL_HEIGHT) : window.innerHeight;
         if (w === 0 || h === 0) return;
+        isMobile.current = w < 768;
         canvas.width = w * dpr;
         canvas.height = h * dpr;
         canvas.style.width = `${w}px`;
@@ -358,15 +392,28 @@ export default function ScrollImageSequence() {
 
         .seq-canvas { display: block; }
 
-        /* Vignette for legibility + cinematic depth */
+        /* Dos capas, ambas del color de la página: un wash acotado a la
+           esquina donde vive el caption, y un fundido de 16% al borde inferior
+           para que el canvas no corte en seco. Un scrim a todo lo ancho daba
+           contraste pero tapaba el panel. */
         .seq-vignette {
           position: absolute;
           inset: 0;
           z-index: 8;
           pointer-events: none;
           background:
-            linear-gradient(0deg, rgba(5, 8, 16, 0.88) 0%, rgba(5, 8, 16, 0.15) 30%, rgba(5, 8, 16, 0) 55%),
-            radial-gradient(120% 90% at 50% 0%, rgba(5, 8, 16, 0) 55%, rgba(5, 8, 16, 0.55) 100%);
+            radial-gradient(52% 46% at 0% 100%, rgba(248, 250, 252, 0.92) 0%, rgba(248, 250, 252, 0.62) 42%, rgba(248, 250, 252, 0) 75%),
+            linear-gradient(0deg, rgba(248, 250, 252, 0.9) 0%, rgba(248, 250, 252, 0.3) 7%, rgba(248, 250, 252, 0) 16%);
+        }
+
+        /* En pantallas angostas el caption ocupa casi todo el ancho, así que
+           el wash tiene que acompañarlo. */
+        @media (max-width: 767px) {
+          .seq-vignette {
+            background:
+              radial-gradient(120% 42% at 20% 100%, rgba(248, 250, 252, 0.94) 0%, rgba(248, 250, 252, 0.68) 45%, rgba(248, 250, 252, 0) 80%),
+              linear-gradient(0deg, rgba(248, 250, 252, 0.9) 0%, rgba(248, 250, 252, 0.3) 7%, rgba(248, 250, 252, 0) 16%);
+          }
         }
 
         /* Top progress line */
@@ -407,12 +454,13 @@ export default function ScrollImageSequence() {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.25);
+          background: rgba(10, 15, 29, 0.28);
+          box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.7);
           transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .seq-tracker-tick.is-done {
-          background: rgba(255, 255, 255, 0.65);
+          background: rgba(10, 15, 29, 0.55);
         }
 
         .seq-tracker-tick.is-active {
@@ -451,6 +499,19 @@ export default function ScrollImageSequence() {
           to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Halo del color de la página detrás de cada glifo: mantiene el
+           contraste en los frames donde el panel cruza por detrás del texto,
+           sin necesidad de una caja opaca. */
+        .seq-lower-number,
+        .seq-lower-tag,
+        .seq-lower-headline,
+        .seq-lower-description,
+        .seq-scroll-hint {
+          text-shadow:
+            0 1px 2px rgba(248, 250, 252, 0.95),
+            0 0 14px rgba(248, 250, 252, 0.85);
+        }
+
         .seq-lower-number {
           flex-shrink: 0;
           font-family: var(--font-heading);
@@ -470,7 +531,7 @@ export default function ScrollImageSequence() {
           width: 1px;
           height: 3.25rem;
           margin-top: 0.4rem;
-          background: rgba(255, 255, 255, 0.2);
+          background: rgba(10, 15, 29, 0.18);
         }
 
         @media (min-width: 640px) {
@@ -499,7 +560,7 @@ export default function ScrollImageSequence() {
           font-size: 1.15rem;
           line-height: 1.28;
           letter-spacing: -0.01em;
-          color: #ffffff;
+          color: #0a0f1d;
           margin-bottom: 0.4rem;
         }
 
@@ -508,14 +569,15 @@ export default function ScrollImageSequence() {
         }
 
         .seq-lower-description {
-          color: rgba(255, 255, 255, 0.65);
-          font-size: 0.85rem;
+          color: #334155;
+          font-weight: 500;
+          font-size: 0.9rem;
           line-height: 1.55;
           max-width: 34ch;
         }
 
         @media (min-width: 640px) {
-          .seq-lower-description { font-size: 0.92rem; }
+          .seq-lower-description { font-size: 0.97rem; }
         }
 
         /* Scroll hint */
@@ -527,7 +589,7 @@ export default function ScrollImageSequence() {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          color: rgba(255, 255, 255, 0.45);
+          color: rgba(10, 15, 29, 0.6);
           font-family: var(--font-sans);
           font-size: 0.7rem;
           font-weight: 600;
@@ -592,14 +654,14 @@ export default function ScrollImageSequence() {
           font-weight: 700;
           font-size: 0.98rem;
           line-height: 1.3;
-          color: #ffffff;
+          color: #0a0f1d;
         }
 
         .seq-static-item-description {
           margin-top: 0.25rem;
           font-size: 0.82rem;
           line-height: 1.5;
-          color: rgba(255, 255, 255, 0.62);
+          color: #334155;
         }
 
         @media (prefers-reduced-motion: reduce) {
