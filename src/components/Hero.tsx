@@ -1,6 +1,6 @@
 import { ArrowUpRight, Check, Leaf, ShieldCheck, TrendingUp } from 'lucide-react';
 import { Announcement, AnnouncementTag, AnnouncementTitle } from '@/components/ui/announcement';
-import heroImg from '../assets/minicasa.webp';
+import heroImg from '../assets/casapanel.webp';
 
 interface HeroProps {
   onOpenConsult: () => void;
@@ -19,7 +19,7 @@ export function Hero({ onOpenConsult }: HeroProps) {
       <div className="hero-image-col">
         <img
           src={heroImg}
-          alt="Maqueta de casa sostenible con panel solar y aerogenerador - Sunrise Energy"
+          alt="Vivienda unifamiliar con planta fotovoltaica instalada en el techo - Sunrise Energy"
           className="hero-img"
           width={896}
           height={1200}
@@ -60,13 +60,6 @@ export function Hero({ onOpenConsult }: HeroProps) {
             ))}
           </ul>
         </div>
-
-        <figure className="hero-quote">
-          <blockquote className="hero-quote-text">“El sol sale para todos.”</blockquote>
-          <figcaption className="hero-quote-caption">
-            Nosotros lo convertimos en energía
-          </figcaption>
-        </figure>
       </div>
 
       {/* Columna Derecha: Contenido del Hero */}

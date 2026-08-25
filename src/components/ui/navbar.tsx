@@ -1,4 +1,4 @@
-import { Equal, X } from 'lucide-react'
+import { ChevronRight, Equal, X } from 'lucide-react'
 import React from 'react'
 import logoIcon from '../../assets/logoicon-cropped.webp'
 import { buttonVariants } from '@/components/ui/button'
@@ -26,6 +26,24 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
         window.addEventListener('scroll', handleScroll, { passive: true })
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    // Con el menú abierto: Escape lo cierra y el fondo deja de scrollear. Sin
+    // esto el panel se quedaba fijo mientras la página se movía por detrás.
+    React.useEffect(() => {
+        if (!menuState) return
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') setMenuState(false)
+        }
+        const previousOverflow = document.body.style.overflow
+        document.body.style.overflow = 'hidden'
+        window.addEventListener('keydown', onKeyDown)
+
+        return () => {
+            document.body.style.overflow = previousOverflow
+            window.removeEventListener('keydown', onKeyDown)
+        }
+    }, [menuState])
 
     const handleCta = () => {
         setMenuState(false)
@@ -60,7 +78,7 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
                     // que la separa de la foto del hero; el backdrop-blur ya no
                     // hace falta al no ser translúcida. De lg hacia arriba sigue
                     // siendo la pastilla flotante con blur.
-                    'mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-b border-black/5 bg-white px-4 py-2.5 transition-all duration-300 sm:px-5 lg:mt-3 lg:rounded-2xl lg:border lg:border-black/5 lg:bg-white/80 lg:shadow-sm lg:backdrop-blur-xl',
+                    'relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-b border-black/5 bg-white px-4 py-2.5 transition-all duration-300 sm:px-5 lg:mt-3 lg:rounded-2xl lg:border lg:border-black/5 lg:bg-white/80 lg:shadow-sm lg:backdrop-blur-xl',
                     isScrolled && 'shadow-sm lg:max-w-4xl lg:bg-white/95 lg:shadow-lg lg:shadow-black/10'
                 )}>
                 <a
@@ -105,28 +123,45 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
                     onClick={() => setMenuState((open) => !open)}
                     aria-label={menuState ? 'Cerrar menú' : 'Abrir menú'}
                     aria-expanded={menuState}
+                    aria-controls="mobile-menu"
                     className="ml-auto shrink-0 rounded-full p-2 text-neutral-950 lg:hidden">
                     {menuState ? <X size={22} /> : <Equal size={22} />}
                 </button>
             </div>
 
             {menuState && (
-                <div className="mx-4 mt-2 flex flex-col gap-1 rounded-2xl border border-black/5 bg-white/95 p-4 shadow-2xl shadow-black/10 backdrop-blur-xl lg:hidden">
-                    {menuItems.map((item) => (
-                        <a
-                            key={item.href}
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
-                            className="rounded-xl px-3.5 py-2.5 text-base font-medium text-neutral-700 duration-150 hover:bg-black/5 hover:text-neutral-950">
-                            {item.name}
-                        </a>
-                    ))}
-                    <button
-                        onClick={handleCta}
-                        className={cn(buttonVariants({ size: 'sm' }), 'mt-2 w-full')}>
-                        Solicitar Consulta
-                    </button>
-                </div>
+                <>
+                    <div
+                        className="mobile-menu-scrim lg:hidden"
+                        onClick={() => setMenuState(false)}
+                        aria-hidden="true"
+                    />
+
+                    {/* Pegado a la barra y a sangre completa: como tarjeta suelta
+                        con margen quedaban dos superficies blancas apiladas con
+                        una costura entre medias. Así el panel lee como una
+                        extensión del header. */}
+                    <nav id="mobile-menu" className="mobile-menu lg:hidden" aria-label="Navegación principal">
+                        {menuItems.map((item, index) => (
+                            <a
+                                key={item.href}
+                                href={item.href}
+                                onClick={(e) => handleNavClick(e, item.href)}
+                                className="mobile-menu-item"
+                                style={{ animationDelay: `${index * 45}ms` }}>
+                                <span>{item.name}</span>
+                                <ChevronRight size={16} strokeWidth={2.25} aria-hidden="true" />
+                            </a>
+                        ))}
+
+                        <button
+                            onClick={handleCta}
+                            className="btn-primary-pill mobile-menu-cta"
+                            style={{ animationDelay: `${menuItems.length * 45}ms` }}>
+                            Solicitar Consulta
+                        </button>
+                    </nav>
+                </>
             )}
         </header>
     )

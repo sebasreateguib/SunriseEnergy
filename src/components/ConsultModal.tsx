@@ -1,9 +1,27 @@
 import { CheckCircle2, X } from 'lucide-react';
+import type { CSSProperties } from 'react';
 
 interface ConsultModalProps {
   open: boolean;
   onClose: () => void;
 }
+
+const BENEFITS = [
+  'Evaluación de viabilidad sin costo inicial',
+  'Integración a la red y cumplimiento normativo integral',
+  'Pronóstico personalizado de ROI y reducción de emisiones',
+];
+
+const benefitRowStyle: CSSProperties = {
+  display: 'flex',
+  // flex-start (no center): con texto de dos líneas el check debe quedar a la
+  // altura de la primera, no flotando en medio.
+  alignItems: 'flex-start',
+  gap: '0.5rem',
+  fontSize: '0.9rem',
+  lineHeight: 1.5,
+  color: '#334155',
+};
 
 export function ConsultModal({ open, onClose }: ConsultModalProps) {
   if (!open) return null;
@@ -71,18 +89,15 @@ export function ConsultModal({ open, onClose }: ConsultModalProps) {
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#334155' }}>
-            <CheckCircle2 size={18} color="#16a34a" />
-            <span>Evaluación de viabilidad sin costo inicial</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#334155' }}>
-            <CheckCircle2 size={18} color="#16a34a" />
-            <span>Integración a la red y cumplimiento normativo integral</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#334155' }}>
-            <CheckCircle2 size={18} color="#16a34a" />
-            <span>Pronóstico personalizado de ROI y reducción de emisiones</span>
-          </div>
+          {BENEFITS.map((benefit) => (
+            <div key={benefit} style={benefitRowStyle}>
+              {/* flexShrink: 0 es imprescindible: sin él el check se encoge en
+                  las filas cuyo texto ocupa dos líneas y cada icono queda de un
+                  tamaño distinto. */}
+              <CheckCircle2 size={18} color="#16a34a" style={{ flexShrink: 0, marginTop: '0.1rem' }} />
+              <span>{benefit}</span>
+            </div>
+          ))}
         </div>
 
         <button

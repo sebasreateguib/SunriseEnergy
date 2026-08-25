@@ -38,15 +38,32 @@ export function About() {
         </div>
 
         <div className="about-image-col">
-          <img
-            src={aboutImg}
-            alt="Infraestructura solar e inversor industrial"
-            className="about-image"
-            width={896}
-            height={1200}
-            loading="lazy"
-            decoding="async"
-          />
+          {/* Halo lima detrás de la foto: la separa del fondo blanco y evita
+              que la columna derecha quede como un recorte pegado. */}
+          <div className="about-image-halo" aria-hidden="true" />
+
+          <figure className="about-image-frame">
+            <img
+              src={aboutImg}
+              alt="Infraestructura solar e inversor industrial"
+              className="about-image"
+              width={896}
+              height={1200}
+              loading="lazy"
+              decoding="async"
+            />
+
+            <figcaption className="about-image-badge">
+              <span className="about-image-badge-value">
+                36<span>+</span>
+              </span>
+              <span className="about-image-badge-label">
+                años integrando
+                <br />
+                energía renovable
+              </span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
