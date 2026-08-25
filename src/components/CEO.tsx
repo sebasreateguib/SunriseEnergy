@@ -36,7 +36,6 @@ export function CEO() {
                 loading="lazy"
                 decoding="async"
               />
-              <div className="ceo-avatar-veil" aria-hidden="true" />
             </div>
 
             <div className="ceo-avatar-badge">
