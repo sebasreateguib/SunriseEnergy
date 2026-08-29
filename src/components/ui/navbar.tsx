@@ -52,8 +52,8 @@ export const Header = ({ onOpenConsult }: HeaderProps) => {
 
     // El scroll suave se hace acá y no con `scroll-behavior: smooth` en html:
     // esa regla se quitó a propósito (commit "scroll fixed") porque afectaba a
-    // toda la página, incluida la secuencia de scroll. El offset se lee del
-    // scroll-padding-top del <html> para no duplicar el alto del header.
+    // toda la página. El offset se lee del scroll-padding-top del <html> para
+    // no duplicar el alto del header.
     const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         setMenuState(false)
 

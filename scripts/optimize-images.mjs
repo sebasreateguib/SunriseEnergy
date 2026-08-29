@@ -5,15 +5,13 @@
  *
  * - Convierte las fotos de `raw-assets/` y los PNG/JPG grandes de `src/assets/`
  *   a WebP redimensionado al tamaño real en que se muestran.
- * - Genera dos sets de frames (desktop / mobile) para la secuencia de scroll
- *   a partir de los 240 frames originales de `raw-assets/panel2/`.
  * - Genera la imagen Open Graph y el apple-touch-icon.
  *
  * Los originales nunca se modifican: vive todo en `raw-assets/` (fuera del
  * bundle) o se reescribe a un archivo `.webp` nuevo junto al original.
  */
 import { existsSync } from 'node:fs';
-import { copyFile, mkdir, readdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -60,29 +58,6 @@ const IMAGES = [
   { in: 'src/assets/caral.png', width: 320, quality: 88 },
 ];
 
-/**
- * Carpeta con los frames originales de la secuencia, en orden.
- * `panel/` son los frames 1920x1080 con buena compresión; `panel2/` es el set
- * viejo (2560x1440 pero muy comprimido) y sólo se usa si el otro no existe.
- */
-const SEQUENCE_SOURCES = ['raw-assets/panel', 'raw-assets/panel2'];
-
-/**
- * Sets de frames de la secuencia de scroll.
- *
- * `step` es cada cuántos frames se toma uno: el peso total de la secuencia es
- * lo único que hay que vigilar aquí (step 1 = los 241 frames = ~13 MB).
- */
-const SEQUENCES = [
-  // Único set, usado tanto en desktop como en mobile: los frames originales
-  // tal cual, a 1920x1080 y sin recomprimir. Pasarlos a WebP los dejaría MÁS
-  // pesados (~78 KB vs 57 KB), porque el WebP gastaría bits en reproducir los
-  // artefactos del JPEG de origen. Un set separado y más liviano para mobile
-  // (menos frames y/o menor resolución) se probó y se descartó: el scrub se
-  // veía visiblemente entrecortado.
-  { name: 'desktop', step: 3, copy: true, ext: 'jpg' },
-];
-
 const kb = (bytes) => `${(bytes / 1024).toFixed(0)} KB`;
 
 async function optimizeImages() {
@@ -113,55 +88,6 @@ async function optimizeImages() {
   }
 
   console.log(`\n  total: ${kb(before)} → ${kb(after)}`);
-}
-
-async function optimizeSequence() {
-  const source = SEQUENCE_SOURCES.map((dir) => path.join(ROOT, dir)).find((dir) =>
-    existsSync(dir)
-  );
-  if (!source) {
-    console.warn(`\n! no se encontró ninguna carpeta de frames (${SEQUENCE_SOURCES.join(', ')})`);
-    return;
-  }
-
-  const frames = (await readdir(source)).filter((f) => /\.jpe?g$/i.test(f)).sort();
-  console.log(
-    `\n▸ Secuencia de scroll — ${path.relative(ROOT, source)} (${frames.length} frames originales)\n`
-  );
-
-  for (const seq of SEQUENCES) {
-    const outDir = path.join(PUBLIC, 'seq', seq.name);
-    await mkdir(outDir, { recursive: true });
-
-    const selected = frames.filter((_, i) => i % seq.step === 0);
-    let total = 0;
-
-    for (const [index, frame] of selected.entries()) {
-      const from = path.join(source, frame);
-      const to = path.join(outDir, `f-${String(index).padStart(3, '0')}.${seq.ext}`);
-
-      if (seq.copy) {
-        await copyFile(from, to);
-        total += (await stat(to)).size;
-      } else {
-        const { size } = await sharp(from)
-          .resize({ width: seq.width, withoutEnlargement: true })
-          .webp({ quality: seq.quality, effort: 5 })
-          .toFile(to);
-        total += size;
-      }
-    }
-
-    console.log(
-      `  ${seq.name.padEnd(8)} ${String(selected.length).padStart(3)} frames ${seq.copy ? 'originales' : `@ ${seq.width}px`} → ${kb(total)} (${kb(total / selected.length)}/frame)`
-    );
-    // El componente necesita estos números; si cambian hay que actualizar
-    // VARIANTS en src/components/scroll-image-sequence.tsx.
-    await writeFile(
-      path.join(outDir, 'manifest.json'),
-      `${JSON.stringify({ frames: selected.length, ext: seq.ext }, null, 2)}\n`
-    );
-  }
 }
 
 /** Primera ruta que exista, para no depender de si el original ya se borró. */
@@ -215,6 +141,5 @@ async function socialAssets() {
 }
 
 await optimizeImages();
-await optimizeSequence();
 await socialAssets();
 console.log('\n✔ Listo\n');

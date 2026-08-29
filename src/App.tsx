@@ -1,6 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
 import ctaImg from './assets/panelnegro2.webp';
-import ScrollImageSequence from './components/scroll-image-sequence';
 import { About } from './components/About';
 import { CEO } from './components/CEO';
 import { ClientsStrip } from './components/ClientsStrip';
@@ -46,7 +45,6 @@ export function App() {
       <Reveal direction="left">
         <ClientsStrip />
       </Reveal>
-      <ScrollImageSequence />
       <Reveal direction="right">
         <About />
       </Reveal>

@@ -1864,6 +1864,215 @@ body {
 }
 
 /* ============================= */
+/* PROYECTOS — MAZO MOBILE       */
+/* ============================= */
+/* Debajo de 1024px la vista de escritorio (foto a sangre con la ficha encima)
+   dejaba la fotografía reducida a una franja: el marco era vertical (342x520)
+   contra tomas mayormente 4:3, así que `cover` se comía la mitad del ancho, y
+   la ficha tapaba dos tercios de lo que sobraba. Acá manda la foto — marco 4:3
+   propio, nada encima salvo la capacidad — y el texto va debajo, sobre navy:
+   el montaje oscuro le da cuerpo a fotografía de archivo bastante desigual. */
+.project-deck {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .project-deck {
+    display: none;
+  }
+}
+
+.project-deck-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+}
+
+.project-deck-count {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.project-deck-count strong {
+  color: var(--color-text-main);
+  font-weight: 800;
+}
+
+.project-deck-rail {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(10, 15, 29, 0.1);
+  overflow: hidden;
+}
+
+.project-deck-rail span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-text-main);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* El carril rompe el padding lateral de la sección para llegar al borde de la
+   pantalla: así la tarjeta siguiente asoma y se lee que hay más para deslizar,
+   pero la primera sigue alineada con el título. */
+.project-deck-track {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--section-px);
+  margin-inline: calc(var(--section-px) * -1);
+  padding: 0.25rem var(--section-px) 1.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-deck-track::-webkit-scrollbar {
+  display: none;
+}
+
+.project-deck-card {
+  flex: 0 0 min(84vw, 380px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--color-text-main);
+  box-shadow: 0 22px 44px -28px rgba(10, 15, 29, 0.55);
+}
+
+/* 4:3 es el ratio de 5 de las 9 tomas: con este marco casi no hay recorte, y
+   las verticales conservan la banda central, que es donde está el sujeto. */
+.project-deck-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0a0f1d;
+}
+
+/* En absoluto y no en flujo: con `height: 100%` dentro de un alto automático la
+   imagen aporta su alto intrínseco y se lleva puesto el `aspect-ratio` — las
+   tomas verticales estiraban la tarjeta al doble. */
+.project-deck-frame img,
+.project-deck-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Degradado sólo en el borde inferior: la capacidad tiene que leerse tanto
+   sobre cielo abierto como sobre sombra, sin apagar la foto entera. */
+.project-deck-frame::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: linear-gradient(0deg, rgba(10, 15, 29, 0.8) 0%, rgba(10, 15, 29, 0) 100%);
+  pointer-events: none;
+}
+
+.project-deck-capacity {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  z-index: 1;
+  margin: 0;
+  padding: 0.32rem 0.72rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-lime);
+  color: var(--color-text-main);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.project-deck-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.15rem 1.25rem 1.35rem;
+}
+
+.project-deck-tag {
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(217, 249, 157, 0.72);
+}
+
+.project-deck-title {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  line-height: 1.28;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Colapsada a 4 líneas con el borde difuminado: ninguna descripción baja de
+   ahí, así que todas las tarjetas arrancan a la misma altura. */
+.project-deck-description {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.62;
+  color: rgba(226, 232, 240, 0.78);
+  max-height: calc(0.86rem * 1.62 * 4);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.38) 100%);
+  mask-image: linear-gradient(180deg, #000 62%, rgba(0, 0, 0, 0.38) 100%);
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-deck-description[data-expanded='true'] {
+  max-height: 34rem;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.project-deck-more {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(217, 249, 157, 0.35);
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--color-brand-lime);
+  transition: border-color var(--transition-fast);
+}
+
+.project-deck-more:hover {
+  border-bottom-color: var(--color-brand-lime);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-deck-rail span,
+  .project-deck-description {
+    transition: none;
+  }
+}
+
+/* ============================= */
 /* PRINCIPAL CLIENTS SECTION       */
 /* ============================= */
 .principal-clients-section {
