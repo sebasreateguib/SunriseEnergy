@@ -1,6 +1,6 @@
 import { DraftingCompass, FileCheck2, FileText, GraduationCap, ShieldCheck, Truck } from 'lucide-react';
 import type { ComponentType } from 'react';
-import serviciosImage from '../assets/servicios.webp';
+import { PlantDiagram } from '@/components/ui/plant-diagram';
 
 interface Service {
   icon: ComponentType<{ size?: number; strokeWidth?: number }>;
@@ -53,15 +53,7 @@ export function Services() {
       </div>
 
       <div className="services-image-col">
-        <img
-          src={serviciosImage}
-          alt="Servicios integrales de ingeniería solar de Sunrise Energy"
-          className="services-image"
-          width={1600}
-          height={872}
-          loading="lazy"
-          decoding="async"
-        />
+        <PlantDiagram />
       </div>
 
       <div className="services-copy-col">
